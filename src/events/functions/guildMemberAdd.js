@@ -1,15 +1,14 @@
 import client from '../../client.js'
 import { BitColors } from '../../util/constants.js'
-import Database from '../../database/Database.js'
 import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
 const { e } = require("../../JSON/emojis.json")
 
 client.on('guildMemberAdd', async member => {
   client.events++
-  if (member.guild.id !== "993634908377464912")
+  if (member.guild.id !== "1109464496164048996")
     return;
-  let channel = await client.channels.fetch('1195133949610045460')
+  let channel = await client.channels.fetch('1194415665503797288')
   channel.send({
     embeds: [{
       title: `Entrou no servidor!`,
