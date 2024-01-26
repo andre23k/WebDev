@@ -482,6 +482,14 @@ export default async function ticketcreate(interaction) {
         }
         else if (interaction.isButton()) {
             if (interaction.customId === 'close-ticket') {
+                const userid = interaction.channel.topic?.match(/\d+/)?.[0];
+                if (interaction.user.id !== userid) {
+                   return await interaction.reply({
+                        content: `${e.Saphire_recusado} | Somente o <@${userid || `Not Foud`}> pode fechar esse ticket!`,
+                        ephemeral: true 
+                    })
+                }
+
                 await interaction.reply({ content: `${e.Load} | O ticket será fechado em 10 segundos...`, ephemeral: false, fetchReply: true }).then(() => {
                     setTimeout(async () => {
                         await interaction.editReply({ content: `${e.Ok} | Ticket fechado com sucesso.`, ephemeral: false, fetchReply: true })
