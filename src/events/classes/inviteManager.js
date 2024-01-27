@@ -29,32 +29,30 @@ export class InviteManager {
         fs.writeFileSync('inviteCounts.json', jsonData);
     }
 
-    handleGuildMemberAdd(member, inviter, invite, error) {
-        let msg = "";
-        const channel = member.guild.channels.cache.get("1194415819908731042");
+    handleGuildMemberAdd(member, inviter, invite, error, channel) {
+        let msg;
 
-        if (error) {
-            console.error(error);
-            return;
+        if (error) { 
+            return console.error(error);
         }
 
         if (!JsonIDs.get('ids').includes(member.id)) {
             if (!inviter) {
-                msg = `🇵🇹 | Welcome ${member}, foi convidado, mas não consegui descobrir quem o convidou!`;
+                msg = `🇵🇹 | Welcome ${member || `Not Foud`}, foi convidado, mas não consegui descobrir quem o convidou!`;
             } else if (member.id === inviter.id) {
-                msg = `🇵🇹 | Welcome ${member}, Entrou no servidor pelo próprio convite!`;
+                msg = `🇵🇹 | Welcome ${member || `Not Foud`}, Entrou no servidor pelo próprio convite!`;
             } else if (member.guild.vanityURLCode === invite?.code) {
-                msg = `🇵🇹 | ${member} Entrou pelo convite personalizado!`;
+                msg = `🇵🇹 | ${member || `Not Foud`} Entrou pelo convite personalizado!`;
             } else {
                 let inviterId = inviter.id;
                 this.loadInviteCounts();
                 this.updateInviteCounts(inviterId);
-                msg = `🇵🇹 | Welcome ${member}, foi convidado por <@!${inviterId}>. Que tem agora ${this.getInviteCount(inviterId)} invites.`;
+                msg = `🇵🇹 | Welcome ${member || `Not Foud`}, foi convidado por <@!${inviterId || `Not Foud`}>. Que tem agora ${this.getInviteCount(inviterId)} invites.`;
             }
         this.arr.push(member.id);
         JsonIDs.set("ids", this.arr)
-        } else { msg = `🇵🇹 | Welcome ${member}, entrou no servidor, mas já esteve aqui!`; }
-        if (member.user.bot) msg = `🇵🇹 | Welcome ${member}, foi convidado por <@!${inviter.id}>`;
+        } else { msg = `🇵🇹 | Welcome ${member || `Not Foud`}, entrou no servidor, mas já esteve aqui!`; }
+        if (member.user.bot) msg = `🇵🇹 | Welcome ${member || `Not Foud`}, foi convidado por <@!${inviter.id || `Not Foud`}>`;
 
         channel.send(msg);
 
