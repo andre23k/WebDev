@@ -29,11 +29,13 @@ export class InviteManager {
         fs.writeFileSync('inviteCounts.json', jsonData);
     }
 
-    handleGuildMemberAdd(member, inviter, invite, error, channel) {
+    handleGuildMemberAdd(member, inviter, invite, error) {
         let msg;
+        const channel = member.guild.channels.cache.get("1194415819908731042");
 
-        if (error) { 
+        if (error) {
             return console.error(error);
+            
         }
 
         if (!JsonIDs.get('ids').includes(member.id)) {

@@ -10,12 +10,11 @@ const { e } = require("../../JSON/emojis.json");
 const inviteManager = new InviteManager();
 
 
-
 tracker.on("guildMemberAdd", async (member, inviter, invite, error) => {
     client.events++;
-    if (member.guild.id !== "993634908377464912")
+    if (member.guild.id !== "1109464496164048996")
         return;
-    let channel = await client.channels.fetch('1195176146229284934');
+    let channel = await client.channels.fetch('1194415665503797288');
     channel.send({
         embeds: [{
             title: `Entrou no servidor!`,
@@ -25,6 +24,6 @@ tracker.on("guildMemberAdd", async (member, inviter, invite, error) => {
             thumbnail: { url: member.user.displayAvatarURL({ forceStatic: true }) || null }
         }]
     });
-    inviteManager.handleGuildMemberAdd(member, inviter, invite, error, channel);
+    inviteManager.handleGuildMemberAdd(member, inviter, invite, error);
 });
 
