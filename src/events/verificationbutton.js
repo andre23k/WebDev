@@ -1,8 +1,11 @@
 import { createRequire } from 'node:module';
+import { BitColors } from '../util/constants.js';
+import moment from 'moment';
+import client from '../client.js';
 const require = createRequire(import.meta.url);
 const { e } = require("../JSON/emojis.json");
 
-export default async function interactionButtonVerification(interaction, client) {
+export default async function interactionButtonVerification(interaction) {
   try {
     if (interaction.customId === "verificar") {
 
@@ -27,17 +30,35 @@ export default async function interactionButtonVerification(interaction, client)
         return;
       }
 
-
+      let channel = interaction.guild.channels.cache.get("1200614205775155222");
       await member.roles.add(role.id, "Verificação");
 
       await interaction.reply({
         content: `Olá, ${interaction.user.username}! Você foi verificado e agora tem acesso ao servidor.`,
         ephemeral: true,
-      });
+      }).then(() => channel.send({
+        embeds: [{
+          title: `Checking System logs`,
+          color: BitColors.DarkRed,
+          author: ({ name: client.user.username, iconURL: client.user.displayAvatarURL({ dynamic: true }) }),
+          thumbnail: { url: interaction.user.displayAvatarURL({ forceStatic: true }) || null },
+          fields: [
+            {
+              name: `${e.Users} | User:`,
+              value: `${interaction.user || `Not Foud`} (\`${interaction.user.id || `Not Foud`}\`)`,
+            },
+            {
+              name: `📅 | Data:`,
+              value: `<t:${moment(interaction.createdTimestamp).unix()}>(<t:${~~(new Date(interaction.createdTimestamp) / 1000)}:R>)`,
+            }
+          ]
+        }]
+      }));
+      
     }
   } catch (error) {
     console.error(error);
-    await interaction.reply({
+    await interaction.editReply({
       content: "Desculpe, ocorreu um erro ao processar sua verificação. Por favor, tente novamente mais tarde ou entre em contato com os administradores do servidor.",
       ephemeral: true,
     });
