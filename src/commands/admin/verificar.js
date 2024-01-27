@@ -53,7 +53,7 @@ export default {
                 ]
             })
 
-            interactionButtonverification(interaction, client)
+            interactionButtonverification(interaction)
         }
     }
 }
