@@ -41,6 +41,4 @@ function activities() {
       client.user.setActivity(activities[sh])
       sh++;
     }, 7 * 1000);
-  
-    let s = 0;
   }
