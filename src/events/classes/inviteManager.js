@@ -1,70 +1,82 @@
-import fs from 'fs';
-import { JsonDB } from "json-db-manager"
-
-const filePath = 'inviteCounts.json';
-const filePathIDs = 'validIDs.json';
-
-let JsonMn = new JsonDB(2, "utf-8").path(filePath)
-let JsonIDs = new JsonDB(2, "utf-8").path(filePathIDs)
+import Database from '../../database/Database.js';
 
 export class InviteManager {
     constructor() {
         this.inviteCounts = new Map();
         this.loadInviteCounts();
-        this.arr = []
+        this.arr = [];
+        this.inviterId = 0;
     }
 
-    loadInviteCounts() {
+    async loadInviteCounts() {
         try {
-            for (const [userId, count] of Object.entries(JsonMn.get())) {
-                this.inviteCounts.set(userId, count);
+
+            const inviteCounts = await Database.Invite.find({
+                userid: this.inviterId,
+            });
+            for (const inviteCount of inviteCounts) {
+                this.inviteCounts.set(this.inviterId, inviteCount.count);
             }
         } catch (error) {
-            console.error('Error loading invite counts:', error);
+            console.error('Erro ao carregar contagens de convites:', error);
         }
     }
 
-    saveInviteCounts() {
-        const jsonData = JSON.stringify(Object.fromEntries(this.inviteCounts));
-        fs.writeFileSync('inviteCounts.json', jsonData);
+    async saveInviteCounts() {
+        try {
+            const userId = this.inviterId;
+            const count = this.inviteCounts.get(userId) || 0;
+            await Database.Invite.findOne({ userid: this.inviterId});
+            await Database.Invite.findOneAndUpdate(
+                { userid: this.inviterId, },
+                { $set: { count: count} },
+                { upsert: true, new: true }
+
+            )
+
+        } catch (error) {
+            console.error('Erro ao salvar', error);
+        }
     }
 
-    handleGuildMemberAdd(member, inviter, invite, error) {
+    async handleGuildMemberAdd(member, inviter, invite, error) {
         let msg;
         const channel = member.guild.channels.cache.get("1194415819908731042");
 
         if (error) {
             return console.error(error);
-            
         }
 
-        if (!JsonIDs.get('ids').includes(member.id)) {
+        if (!this.arr.includes(member.id)) {
             if (!inviter) {
-                msg = `🇵🇹 | Welcome ${member || `Not Foud`}, foi convidado, mas não consegui descobrir quem o convidou!`;
+                msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, foi convidado, mas não consegui descobrir quem o convidou!`;
             } else if (member.id === inviter.id) {
-                msg = `🇵🇹 | Welcome ${member || `Not Foud`}, Entrou no servidor pelo próprio convite!`;
+                msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, entrou no servidor pelo próprio convite!`;
             } else if (member.guild.vanityURLCode === invite?.code) {
-                msg = `🇵🇹 | ${member || `Not Foud`} Entrou pelo convite personalizado!`;
+                msg = `🇵🇹 | ${member || `Not Found`} entrou pelo convite personalizado!`;
             } else {
-                let inviterId = inviter.id;
-                this.loadInviteCounts();
-                this.updateInviteCounts(inviterId);
-                msg = `🇵🇹 | Welcome ${member || `Not Foud`}, foi convidado por <@!${inviterId || `Not Foud`}>. Que tem agora ${this.getInviteCount(inviterId)} invites.`;
+                this.inviterId = inviter.id;
+                this.updateInviteCounts(this.inviterId);
+                msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, foi convidado por <@!${this.inviterId || `Not Found`}>. Que agora tem ${this.getInviteCount(this.inviterId)} invites.`;
             }
-        this.arr.push(member.id);
-        JsonIDs.set("ids", this.arr)
-        } else { msg = `🇵🇹 | Welcome ${member || `Not Foud`}, entrou no servidor, mas já esteve aqui!`; }
-        if (member.user.bot) msg = `🇵🇹 | Welcome ${member || `Not Foud`}, foi convidado por <@!${inviter.id || `Not Foud`}>`;
+
+            this.arr.push(member.id);
+            await this.saveInviteCounts();
+        } else {
+            msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, entrou no servidor, mas já esteve aqui!`;
+        }
+        if (member.user.bot) msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, foi convidado por <@!${inviter.id || `Not Found`}>`;
 
         channel.send(msg);
-
     }
 
     updateInviteCounts(inviterId) {
         let currentCount = this.inviteCounts.get(inviterId) || 0;
-        currentCount = currentCount + 1
+        currentCount = currentCount + 1;
         this.inviteCounts.set(inviterId, currentCount);
-        this.saveInviteCounts();
     }
-    getInviteCount(inviterId) { return this.inviteCounts.get(inviterId) || 0; }
+
+    getInviteCount(inviterId) {
+        return this.inviteCounts.get(inviterId) || 0;
+    }
 }
