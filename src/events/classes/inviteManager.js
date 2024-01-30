@@ -55,7 +55,7 @@ export class InviteManager {
                 msg = `🇵🇹 | ${member || `Not Found`} entrou pelo convite personalizado!`;
             } else {
                 this.inviterId = inviter.id;
-                this.loadInviteCounts()
+                 await this.loadInviteCounts()
                 this.updateInviteCounts(this.inviterId);
                 msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, foi convidado por <@!${this.inviterId || `Not Found`}>. Que agora tem ${this.getInviteCount(this.inviterId)} invites.`;
             }
