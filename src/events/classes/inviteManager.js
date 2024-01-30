@@ -10,7 +10,6 @@ export class InviteManager {
 
     async loadInviteCounts() {
         try {
-
             const inviteCounts = await Database.Invite.find({
                 userid: this.inviterId,
             });
@@ -56,6 +55,7 @@ export class InviteManager {
                 msg = `🇵🇹 | ${member || `Not Found`} entrou pelo convite personalizado!`;
             } else {
                 this.inviterId = inviter.id;
+                this.loadInviteCounts()
                 this.updateInviteCounts(this.inviterId);
                 msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, foi convidado por <@!${this.inviterId || `Not Found`}>. Que agora tem ${this.getInviteCount(this.inviterId)} invites.`;
             }
