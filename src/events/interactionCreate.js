@@ -2,6 +2,7 @@ import client from '../client.js'
 import { InteractionType } from 'discord.js';
 import interactionButtonverification from '../events/verificationbutton.js'
 import ticketcreate from '../events/ticketCreate.js'
+
 client.on('interactionCreate', (interaction) => {
    client.interactions++
 
