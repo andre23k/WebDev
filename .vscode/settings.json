@@ -7,7 +7,7 @@
     "workbench.startupEditor": "none",
     "javascript.suggest.autoImports": true,
     "javascript.updateImportsOnFileMove.enabled": "always",
-    "tabnine.experimentalAutoImports" : true,
+    "tabnine.experimentalAutoImports": true,
     "discord.largeImageIdling": "⏲️ Código, Café e Pomodoro",
     "discord.lowerDetailsDebugging": "🐛 Debugging: {git_branch}",
     "discord.lowerDetailsNoWorkspaceFound": "{file_size}",
@@ -18,9 +18,7 @@
     "explorer.compactFolders": false,
     "editor.semanticHighlighting.enabled": false,
     "breadcrumbs.enabled": false,
-
     "editor.minimap.enabled": false,
-    "editor.scrollbar.horizontal": "hidden",
     "editor.scrollbar.vertical": "hidden",
     "apc.header": {
         "height": 36
@@ -40,8 +38,6 @@
         "package.json": ".eslint*, prettier*, tsconfig*, vite*, pnpm-lock*, bun.lockb, nest*",
         ".env.local": ".env*",
         ".env": ".env*"
-      },
-      "terminal.integrated.fontSize": 12, 
+    },
+    "terminal.integrated.fontSize": 12,
 }
-
-
