@@ -1,0 +1,61 @@
+{
+    "editor.smoothScrolling": true,
+    "editor.stickyScroll.enabled": true,
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontSize": 13,
+    "editor.lineHeight": 1.8,
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "workbench.startupEditor": "none",
+    "javascript.suggest.autoImports": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "tabnine.experimentalAutoImports" : true,
+    "discord.detailsEditing": "🛠 {file_name} com {file_size}",
+    "discord.largeImageIdling": "⏲️ Código, Café e Pomodoro",
+    "discord.lowerDetailsDebugging": "🐛 Debugging: {git_branch}",
+    "discord.lowerDetailsEditing": "📁 Projeto: {workspace}",
+    "discord.lowerDetailsNoWorkspaceFound": "{file_size}",
+    "extensions.ignoreRecommendations": true,
+    "editor.renderLineHighlight": "gutter",
+    "editor.fontLigatures": true,
+    "workbench.editor.labelFormat": "short",
+    "explorer.compactFolders": false,
+    "editor.semanticHighlighting.enabled": false,
+    "breadcrumbs.enabled": false,
+
+    "editor.minimap.enabled": false,
+    "editor.scrollbar.horizontal": "hidden",
+    "editor.scrollbar.vertical": "hidden",
+    "apc.electron": {
+        "trafficLightPosition": {
+            "x": 10,
+            "y": 11
+        }
+    },
+    "apc.header": {
+        "height": 36
+    },
+    "apc.listRow": {
+        "height": 24
+    },
+    "apc.stylesheet": {
+        ".title-label > h2": "display: none",
+        ".editor-actions": "display: none",
+        ".nosidebar .inline-tabs-placeholder": "width: 75px",
+        ".pane-header": "padding: 0 8px",
+        ".pane-body": "padding: 8px",   
+        ".monaco-list-row": "border-radius: 4px;",
+        ".monaco-workbench .monaco-list:not(.element-focused):focus:before": "display: none;"
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "package.json": ".eslint*, prettier*, tsconfig*, vite*, pnpm-lock*, bun.lockb, nest*",
+        ".env.local": ".env*",
+        ".env": ".env*"
+      },
+      "terminal.integrated.fontSize": 12, 
+}
+
+
