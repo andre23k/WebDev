@@ -25,10 +25,10 @@ export class InviteManager {
         try {
             const userId = this.inviterId;
             const count = this.inviteCounts.get(userId) || 0;
-            await Database.Invite.findOne({ userid: this.inviterId});
+            await Database.Invite.findOne({ userid: this.inviterId });
             await Database.Invite.findOneAndUpdate(
                 { userid: this.inviterId, },
-                { $set: { count: count} },
+                { $set: { count: count } },
                 { upsert: true, new: true }
 
             )
@@ -55,7 +55,7 @@ export class InviteManager {
                 msg = `🇵🇹 | ${member || `Not Found`} entrou pelo convite personalizado!`;
             } else {
                 this.inviterId = inviter.id;
-                 await this.loadInviteCounts()
+                await this.loadInviteCounts()
                 this.updateInviteCounts(this.inviterId);
                 msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, foi convidado por <@!${this.inviterId || `Not Found`}>. Que agora tem ${this.getInviteCount(this.inviterId)} invites.`;
             }
@@ -79,4 +79,5 @@ export class InviteManager {
     getInviteCount(inviterId) {
         return this.inviteCounts.get(inviterId) || 0;
     }
+
 }
