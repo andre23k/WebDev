@@ -11,7 +11,6 @@ client.once('ready', async () => {
     .catch(err => {
       console.log('Mongoose Database | FAIL!\n--> ' + err)
     })
-
   activities()
   console.log('Event Ready | OK')
 })
