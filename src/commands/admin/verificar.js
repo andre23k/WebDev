@@ -1,7 +1,6 @@
 import { ApplicationCommandType, PermissionFlagsBits, ButtonStyle } from 'discord.js';
 import { PermissionsTranslate, BitColors } from '../../util/constants.js'
 import { createRequire } from 'node:module'
-import interactionButtonverification from '../../events/verificationbutton.js'
 const require = createRequire(import.meta.url)
 const { e } = require('../../JSON/emojis.json')
 
@@ -53,7 +52,6 @@ export default {
                 ]
             })
 
-            interactionButtonverification(interaction)
         }
     }
 }

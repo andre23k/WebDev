@@ -1,4 +1,4 @@
-import client from '.././client.js'
+import client from '../client.js'
 
 client.on("error", console.error)
 
