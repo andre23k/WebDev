@@ -25,12 +25,10 @@ export class InviteManager {
         try {
             const userId = this.inviterId;
             const count = this.inviteCounts.get(userId) || 0;
-            await Database.Invite.findOne({ userid: this.inviterId });
-            await Database.Invite.findOneAndUpdate(
+            await Database.Invite.updateOne(
                 { userid: this.inviterId, },
                 { $set: { count: count } },
-                { upsert: true, new: true }
-
+                { upsert: true }
             )
 
         } catch (error) {
