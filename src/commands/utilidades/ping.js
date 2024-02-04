@@ -20,7 +20,7 @@ export default {
         toSubtract = Date.now()
 
         const data = {
-            content: `⏱️ | ${Date.stringDate(client.uptime)}\n${e.Slash} | Interações: ${client.interactions || 0}\n${e.Hello} | Mensagens: ${client.messages || 0} \n${e.Anya_pulo} | Events: ${client.events || 0} \n${e.Discord} | Discord API Latency: ${emojiFormat(client.ws.ping)}\n⚡ | Interaction Response: ${emojiFormat(replayPing)}`,
+            content: `⏱️ | ${Date.stringDate(client.uptime)}\n${e.Slash} | Interações: ${client.interactions || 0}\n${e.Anya_pulo} | Events: ${client.events || 0} \n${e.Discord} | Discord API Latency: ${emojiFormat(client.ws.ping)}\n⚡ | Interaction Response: ${emojiFormat(replayPing)}`,
             components: [
                 {
                     type: 1,
