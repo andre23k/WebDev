@@ -10,20 +10,20 @@ const tracker = new inviteTracker(client);
 const inviteManager = new InviteManager();
 
 
-tracker.on("guildMemberAdd", async (member, inviter, invite, error) => {  
-    console.log(member.user.id);
+tracker.on("guildMemberAdd", async (member, inviter, invite, error) => {
     client.events++;
     if (member.guild.id !== "1109464496164048996")
         return;
     let channel = await client.channels.fetch('1194415665503797288');
-   await channel.send({
+    if (!channel) return
+    await channel.send({
         embeds: [{
             title: `Entrou no servidor!`,
             color: BitColors.DarkRed,
-            description: `${e.Ids} **Membro:** ${member}\n⠀ ${e.Ids} **ID:**\`${member.user.id}\`\n⠀ ${e.Ids} **Tag:**\`${member.user.tag}\` `,
+            description: `${e.Ids} **Membro:** ${member || `Not Found`}\n⠀ ${e.Ids} **ID:**\`${member.user.id || `Not Found`}\`\n⠀ ${e.Ids} **Tag:**\`${member.user.tag || `Not Found`}\` `,
             author: ({ name: client.user.username, iconURL: client.user.displayAvatarURL({ dynamic: true }) }),
             thumbnail: { url: member.user.displayAvatarURL({ forceStatic: true }) || null }
         }]
     });
-  await inviteManager.handleGuildMemberAdd(member, inviter, invite, error);
+    await inviteManager.handleGuildMemberAdd(member, inviter, invite, error);
 });

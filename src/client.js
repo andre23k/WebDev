@@ -18,10 +18,12 @@ const options = {
         GatewayIntentBits.MessageContent
     ]
 };
+
 class Lesath extends Client {
     /**@type {Collection <string, any>} */
     slashCommands = new Collection()
     interactions = 0
+    messages = 0
     constructor() {
         super(options)
     }
