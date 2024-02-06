@@ -1,8 +1,8 @@
 import { WebhookClient } from 'discord.js'
 import { createRequire } from 'node:module'
 
-const webhook = new WebhookClient({ url: `${process.env.WEBHOOK_LOGS}` })
 const require = createRequire(import.meta.url)
+const webhook = new WebhookClient({ url: `${process.env.WEBHOOK_LOGS}` })
 const { e } = require("../../JSON/emojis.json")
 
 async function Readylogs() {
@@ -31,9 +31,17 @@ async function DatabaseLoaded() {
         content: `${e.Ok} | DataBase Loaded!`
     })
 }
+
+async function DatabaseCrashed(err) {
+    await webhook.send({
+        avatarURL: `https://media.discordapp.net/attachments/1030298443664597052/1071463846935547934/satelite.png?ex=65d0db77&is=65be6677&hm=d3879aacdbc848a16052d1cda149a3407b854cb75036d4aeb25ef4b50c435516&=&format=webp&quality=lossless&width=384&height=384`,
+        content: `${e.Error} | Database is not connecting!\n${e.Saphire_rigth} | ${err}`
+    })
+}
 export {
     Readylogs,
     SlashCommandsLoaded,
     EventsLoaded,
-    DatabaseLoaded
+    DatabaseLoaded,
+    DatabaseCrashed
 }
