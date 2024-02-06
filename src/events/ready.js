@@ -1,5 +1,7 @@
 import mongoose from "mongoose"
 import client from "../client.js"
+import { Readylogs } from './system/systemlogs.js'
+import { DatabaseLoaded } from '../events/system/systemlogs.js'
 
 client.once('ready', async () => {
   import("../handlers/handler.commands.js").then(fn => fn.default(client))
@@ -7,11 +9,15 @@ client.once('ready', async () => {
   mongoose.set('strictQuery', true);
 
   await mongoose.connect(process.env.DATABASE_TOKEN)
-    .then(() => { console.log(`Connected Database | OK!`) })
+    .then(async () => {
+      await DatabaseLoaded()
+      console.log(`Connected Database | OK!`)
+    })
     .catch(err => {
       console.log('Mongoose Database | FAIL!\n--> ' + err)
     })
   activities()
+  Readylogs()
   console.log('Event Ready | OK')
 })
 

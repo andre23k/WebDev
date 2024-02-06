@@ -1,5 +1,9 @@
+import client from '../../client.js';
 import Database from '../../database/Database.js';
-
+import { BitColors } from '../../util/constants.js';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { e } = require("../../JSON/emojis.json");
 export class InviteManager {
     constructor() {
         this.inviteCounts = new Map();
@@ -77,5 +81,17 @@ export class InviteManager {
     getInviteCount(inviterId) {
         return this.inviteCounts.get(inviterId) || 0;
     }
-
+    async registerMemberAdd(member) {
+        let channel = await client.channels.fetch('1194415665503797288');
+        if (!channel) return
+        await channel.send({
+            embeds: [{
+                title: `Entrou no servidor!`,
+                color: BitColors.DarkRed,
+                description: `${e.Ids} **Membro:** ${member || `Not Found`}\n⠀ ${e.Ids} **ID:**\`${member.user.id || `Not Found`}\`\n⠀ ${e.Ids} **Tag:**\`${member.user.tag || `Not Found`}\` `,
+                author: ({ name: client.user.username, iconURL: client.user.displayAvatarURL({ dynamic: true }) }),
+                thumbnail: { url: member.user.displayAvatarURL({ forceStatic: true }) || null }
+            }]
+        });
+    }
 }
