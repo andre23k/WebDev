@@ -482,56 +482,49 @@ export default async function ticketcreate(interaction) {
         }
         else if (interaction.isButton()) {
             if (interaction.customId === 'close-ticket') {
-                const userid = interaction.channel.topic?.match(/\d+/)?.[0];
+                const userid = interaction.channel.topic
+                if (!interaction.channel.topic) return;
                 if (interaction.user.id !== userid) {
-                   return await interaction.reply({
+                    return await interaction.reply({
                         content: `${e.Saphire_recusado} | Somente o <@${userid || `Not Foud`}> pode fechar esse ticket!`,
-                        ephemeral: true 
+                        ephemeral: true
                     })
                 }
 
-                await interaction.reply({ content: `${e.Load} | O ticket será fechado em 10 segundos...`, ephemeral: false, fetchReply: true }).then(() => {
-                    setTimeout(async () => {
-                        await interaction.editReply({ content: `${e.Ok} | Ticket fechado com sucesso.`, ephemeral: false, fetchReply: true })
-                        interaction.channel.permissionOverwrites.edit(interaction.user.id, { ViewChannel: false },).catch(err => {
-                            interaction.editReply({ content: `${e.Error} | Houve um erro ao fechar seu ticket.\n${err}` })
-                        })
-                    }, 10 * 1000);
-
+                await interaction.reply({ content: `${e.Ok} | Ticket fechado com sucesso.`, ephemeral: false })
+                await interaction.channel.setTopic('').catch(() => null)
+                interaction.channel.permissionOverwrites.edit(interaction.user.id, { ViewChannel: false },).catch(err => {
+                    interaction.editReply({ content: `${e.Error} | Houve um erro ao fechar seu ticket.\n${err}` })
                 })
+
             }
 
             else if (interaction.isButton()) {
                 if (interaction.customId === 'arquivar-ticket') {
-                    if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator))
-                        return interaction.reply({ content: `${e.Error} Você não tem permissão para realizar essa ação.`, ephemeral: true })
-
-                    await interaction.reply({
-                        content: `${e.Load} | O ticket será arquivado em 10 segundos...`,
-                        ephemeral: false,
-                        fetchReply: true
-                    }).then(() => {
-                        setTimeout(async () => {
-                            const newCategoryId = '1195795946076913775';
-                            const topicmember = interaction.channel.topic;
-
-                            if (topicmember) {
-                                await interaction.channel.permissionOverwrites.edit(topicmember, {
-                                    ViewChannel: false,
-                                })
-                            }
-                            if (!topicmember) return
-
-                            await interaction.editReply({ content: `${e.Ok} | Ticket arquivado com sucesso.`, ephemeral: false, fetchReply: true })
-
-                            await interaction.channel.setParent(newCategoryId);
-                            await interaction.channel.setTopic('').catch(() => null)
-                            interaction.channel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: false },).catch(err => {
-                                interaction.editReply({ content: `${e.Error} | Houve um erro ao arquivar o ticket.\n${err}` })
+                    if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+                        await interaction.reply({ content: `${e.Error} Você não tem permissão para realizar essa ação.`, ephemeral: true })
+                    } else {
+                        const newCategoryId = '1195795946076913775';
+                        const topicmember = interaction.channel.topic;
+                        if (topicmember) {
+                            await interaction.channel.permissionOverwrites.edit(topicmember, {
+                                ViewChannel: false,
                             })
-                        }, 10 * 1000);
+                        }
+                        if (interaction.channel.parentId === newCategoryId) {
+                            await interaction.reply({ content: `${e.Info} | Este ticket já foi arquivado.`, ephemeral: true });
+                            return;
+                        }
 
-                    })
+                        await interaction.reply({ content: `${e.Ok} | Ticket arquivado com sucesso.`, ephemeral: false })
+
+                        await interaction.channel.setParent(newCategoryId);
+                        await interaction.channel.setTopic('').catch(() => null)
+                        interaction.channel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: false },).catch(err => {
+                            interaction.editReply({ content: `${e.Error} | Houve um erro ao arquivar o ticket.\n${err}` })
+                        })
+                    }
+
                 }
                 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 // SISTEMA DE TICKET (QUANDO CLICAR EM ABRIR)
