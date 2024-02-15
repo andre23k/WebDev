@@ -53,8 +53,12 @@ export default async function interactionButtonVerification(interaction) {
             }
           ]
         }]
-      }));
-      
+      })).catch(async () => await interaction.editReply({
+        content: `${e.Saphire_triste} | Ocorreu um erro ao se verificar.`,
+        ephemeral: true
+      }))
+
+
     }
   } catch (error) {
     console.error(error);

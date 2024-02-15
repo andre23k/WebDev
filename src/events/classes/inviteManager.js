@@ -84,7 +84,7 @@ export class InviteManager {
     async registerMemberAdd(member) {
         let channel = await client.channels.fetch('1194415665503797288');
         if (!channel) return
-        await channel.send({
+      return await channel.send({
             embeds: [{
                 title: `Entrou no servidor!`,
                 color: BitColors.DarkRed,
