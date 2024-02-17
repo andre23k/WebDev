@@ -11,6 +11,5 @@ tracker.on("guildMemberAdd", async (member, inviter, invite, error) => {
     client.events++;
     if (member.guild.id !== "1109464496164048996")
         return;
-    await inviteManager.registerMemberAdd(member);
     await inviteManager.handleGuildMemberAdd(member, inviter, invite, error);
 });

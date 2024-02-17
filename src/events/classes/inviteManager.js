@@ -21,7 +21,7 @@ export class InviteManager {
                 this.inviteCounts.set(this.inviterId, inviteCount.count);
             }
         } catch (error) {
-            console.error('Erro ao carregar contagens de convites:', error);
+            console.error('Erro ao carregar contagens de convites: ', error);
         }
     }
 
@@ -41,6 +41,8 @@ export class InviteManager {
     }
 
     async handleGuildMemberAdd(member, inviter, invite, error) {
+        await this.registerMemberAdd(member)
+
         let msg;
         const channel = member.guild.channels.cache.get("1194415819908731042");
 
@@ -81,10 +83,11 @@ export class InviteManager {
     getInviteCount(inviterId) {
         return this.inviteCounts.get(inviterId) || 0;
     }
+
     async registerMemberAdd(member) {
         let channel = await client.channels.fetch('1194415665503797288');
         if (!channel) return
-      return await channel.send({
+        return await channel.send({
             embeds: [{
                 title: `Entrou no servidor!`,
                 color: BitColors.DarkRed,
