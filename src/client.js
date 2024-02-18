@@ -1,6 +1,8 @@
 import "./prototypes/index.js"
 process.env.TZ = "America/Sao_Paulo"
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
+import { discloud } from 'discloud.app'
+await discloud.login()
 
 const options = {
     intents: [
@@ -30,4 +32,3 @@ class Lesath extends Client {
 
 const client = new Lesath()
 export default client
-

@@ -5,13 +5,12 @@
     "discord-inviter": "^0.9.3",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.1",
-    "json-db-manager": "^0.1.22",
     "moment": "^2.30.1",
     "mongoose": "^8.1.1",
     "parse-ms": "^4.0.0"
   },
   "name": "fivem-portugal",
-  "version": "0.1.2",
+  "version": "0.3.0",
   "main": "src/index.js",
   "type": "module",
   "scripts": {

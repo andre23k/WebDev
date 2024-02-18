@@ -2,7 +2,7 @@ import client from '../client.js'
 
 client.on("error", console.error)
 
-process.on('uncaughtExceptionMonitor', async reason => {
+process.on('unhandledRejection', async reason => {
     console.log(reason)
     const user = await client.users.fetch('648389538703736833').catch(() => null)
     if (!user) return
