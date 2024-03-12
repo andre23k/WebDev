@@ -1,9 +1,11 @@
 import { PermissionFlagsBits } from "discord.js"
 import { PermissionsTranslate } from '../../util/constants.js'
-import ticketcreate from "../../events/ticketCreate.js"
+import TicketHandler from '../../events/ticket/ticketCreate.js';
+import client from "../../client.js";
 import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
 const { e } = require("../../JSON/emojis.json")
+const ticketHandler = new TicketHandler(client);
 
 export default {
     name: "ticket",
@@ -51,7 +53,7 @@ export default {
                         {
                             label: 'Minha opção não está aqui! Me ajuda!',
                             emoji: '❓',
-                            value: 'opção',
+                            value: 'ajuda',
                         },
                     ]
                 }]
@@ -69,7 +71,7 @@ export default {
                 components: [selectMenu]
 
             })
-            ticketcreate(interaction)
+            ticketHandler.handleButton(interaction);
 
         }
     }
