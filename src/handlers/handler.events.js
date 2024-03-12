@@ -10,4 +10,4 @@ for (const eventFileName of eventsFilesFunctions) {
   import(`../events/functions/${eventFileName}`)
 }
 console.log(`${[...eventsFilesNames, ...eventsFilesFunctions].length} Events | OK`)
-await EventsLoaded()
+EventsLoaded()

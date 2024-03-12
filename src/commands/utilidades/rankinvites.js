@@ -19,7 +19,7 @@ export default {
             const userId = interaction.user.id;
             const inviteRanking = await Database.Invite.find({})
                 .sort({ count: -1 })
-                .limit(20);
+                .limit(10);
 
             const userIndex = inviteRanking.findIndex((user) => user.userid === userId);
             const userRanking = userIndex !== -1 ? userIndex + 1 : '^2000';
