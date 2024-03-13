@@ -3,7 +3,7 @@ import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
 const { e } = require("../../../JSON/emojis.json")
 
-export default async function fileticket(interaction){
+export default async function fileticket(interaction) {
     if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
         await interaction.reply({ content: `${e.Error} Você não tem permissão para realizar essa ação.`, ephemeral: true })
     } else {
@@ -23,8 +23,8 @@ export default async function fileticket(interaction){
 
         await interaction.channel.setParent(newCategoryId);
         await interaction.channel.setTopic('').catch(() => null)
-        interaction.channel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: false },).catch(err => {
-            interaction.editReply({ content: `${e.Error} | Houve um erro ao arquivar o ticket.\n${err}` })
+        await interaction.channel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: false },).catch(async err => {
+            await interaction.editReply({ content: `${e.Error} | Houve um erro ao arquivar o ticket.\n${err}` })
         })
     }
 }

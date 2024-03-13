@@ -1,12 +1,12 @@
 import moment from 'moment';
-import client from '../../../client.js'
-import { EmbedBuilder, PermissionFlagsBits } from 'discord.js';
+import { PermissionFlagsBits } from 'discord.js';
 import discordTranscripts from 'discord-html-transcripts';
 import { createRequire } from 'node:module'
+import { BitColors } from '../../../util/constants.js';
 const require = createRequire(import.meta.url)
 const { e } = require("../../../JSON/emojis.json")
 
-export default async function handleTicketClose(interaction) {
+export async function handleTicketClose(interaction) {
     if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
         await closeTicket(interaction);
     } else {
@@ -15,51 +15,51 @@ export default async function handleTicketClose(interaction) {
 }
 
 async function closeTicket(interaction) {
-    await interaction.reply({ content: `${e.Load} | O ticket será encerrado em 10 segundos.`, ephemeral: false, fetchReply: true }).then(() => {
-        setTimeout(async () => {
-            const channel = interaction.channel;
-            const attachment = await discordTranscripts.createTranscript(channel, {
-                limit: 1000,
-                returnType: 'attachment',
-                filename: `logs_${channel.name}.html`,
-                saveImages: false,
-                poweredBy: true
-            });
+    await interaction.reply({
+        content: `${e.Load} | Encerrando o ticket...`
+    });
+    setTimeout(async () => {
+        const channel = interaction.channel;
+        const attachment = await discordTranscripts.createTranscript(channel, {
+            limit: 1000,
+            returnType: 'attachment',
+            filename: `logs_${channel.name}.html`,
+            saveImages: false,
+            poweredBy: true
+        });
 
-            const logchannel = client.channels.cache.get('1165706306573832212');
+        const logchannel = interaction.client.channels.cache.get('1165706306573832212');
+        if (!logchannel) return;
 
-            let embedclose = new EmbedBuilder()
-                .setColor("Red")
-                .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL({ dynamic: true }) })
-                .addFields(
+        await logchannel.send({
+            embeds: [{
+                color: BitColors.Red,
+                author: {
+                    name: `${interaction.guild.name || `Not Found`}`,
+                    icon_url: `${interaction.guild.iconURL({ dynamic: true })}`,
+                },
+                fields: [
                     {
-                        name: `🎫 | Quem Fechou`,
+                        name: '🎫 | Quem Fechou',
                         value: `${interaction.user || `Not Found`}, \`${interaction.user.id || `Not Found`}\``,
-                        inline: false
                     },
                     {
                         name: `🎫 | Nome do ticket:`,
                         value: `\`${interaction.channel.name || `Not Found`}\``,
-                        inline: false
                     },
                     {
                         name: `📅 | Data:`,
                         value: `<t:${moment(interaction.createdTimestamp).unix()}>(<t:${~~(new Date(interaction.createdTimestamp) / 1000)}:R>)`,
-                        inline: false
                     }
-                )
+                ],
+            }],
+            files: [attachment]
+        }).catch(() => null);
 
-            await logchannel.send({
-                embeds: [embedclose],
-                files: [attachment]
-            });
-
-            await interaction.channel.delete();
-
-        }, 10 * 1000);
-
-    });
+        await interaction.channel.delete().catch(() => null);
+    }, 5000);
 }
+
 
 async function leaveTicket(interaction) {
     const userid = interaction.channel.topic

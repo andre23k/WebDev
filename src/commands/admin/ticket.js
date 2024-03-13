@@ -58,21 +58,22 @@ export default {
                     ]
                 }]
             }
-
-            interaction.channel.send({
+            await interaction.reply({
+                content: `${e.Saphire_ok} | Ticket ativado com sucesso!`,
+                ephemeral: true
+            })
+            await interaction.channel.send({
                 embeds: [{
                     author: ({ name: "Criar Ticket" }),
                     color: 0x2f3136,
                     description: `Para criar um ticket, selecione o tópico que você precisa na seleção abaixo..`,
-                    thumbnail:{
-                        url:`https://media.discordapp.net/attachments/1194433381019164682/1195792969010266302/6b7280b1f7c377f6773f5b81b9bb49bf.png?ex=65b547fc&is=65a2d2fc&hm=1a0f2e0a46f87e080bc293e448a6c401da54e64d036e3246c7a4c8199469c975&=&format=webp&quality=lossless&width=54&height=54`
+                    thumbnail: {
+                        url: `https://media.discordapp.net/attachments/1194433381019164682/1195792969010266302/6b7280b1f7c377f6773f5b81b9bb49bf.png?ex=65b547fc&is=65a2d2fc&hm=1a0f2e0a46f87e080bc293e448a6c401da54e64d036e3246c7a4c8199469c975&=&format=webp&quality=lossless&width=54&height=54`
                     }
                 }],
                 components: [selectMenu]
 
             })
-            ticketHandler.handleButton(interaction);
-
         }
     }
 }

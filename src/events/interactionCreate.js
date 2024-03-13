@@ -1,7 +1,7 @@
 import client from '../client.js'
 import { InteractionType } from 'discord.js';
 import interactionButtonverification from '../events/verificationbutton.js'
-import TicketHandler  from '../events/ticket/ticketCreate.js';
+import TicketHandler from '../events/ticket/ticketCreate.js';
 const ticketHandler = new TicketHandler(client);
 
 client.on('interactionCreate', async interaction => {
@@ -12,11 +12,11 @@ client.on('interactionCreate', async interaction => {
          const data = JSON.parse(interaction.customId)
          if (data.key == 'ping') return client.slashCommands.get('ping').run(client, interaction, true)
       }
-     await ticketHandler.handleButton(interaction);
+      await ticketHandler.handleButton(interaction);
       interactionButtonverification(interaction);
    }
    if (interaction.isAnySelectMenu()) {
-     await ticketHandler.handleSelectMenu(interaction)
+      await ticketHandler.handleSelectMenu(interaction)
    }
 
 
