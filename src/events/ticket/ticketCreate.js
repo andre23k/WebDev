@@ -2,6 +2,7 @@ import { ButtonStyle } from 'discord.js';
 import { createRequire } from 'node:module';
 import { handleTicketClose } from './functions/closeticket.js';
 import fileticket from './functions/fileticket.js';
+import interactionButtonVerification from '../verificationbutton.js';
 
 const require = createRequire(import.meta.url);
 const { e } = require("../../JSON/emojis.json");
@@ -43,7 +44,7 @@ export default class TicketHandler {
         this.type = interaction.customId
         if (this.type == 'close-ticket') return await handleTicketClose(interaction)
         if (this.type == 'file-ticket') return await fileticket(interaction)
-        
+        if (this.type == 'verificar') return;
         await this.createTicket(interaction);
     }
 

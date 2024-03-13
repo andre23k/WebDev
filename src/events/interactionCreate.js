@@ -13,7 +13,7 @@ client.on('interactionCreate', async interaction => {
          if (data.key == 'ping') return client.slashCommands.get('ping').run(client, interaction, true)
       }
       await ticketHandler.handleButton(interaction);
-      interactionButtonverification(interaction);
+      if (interaction.customId == 'verificar') return await interactionButtonverification(interaction);
    }
    if (interaction.isAnySelectMenu()) {
       await ticketHandler.handleSelectMenu(interaction)
@@ -29,5 +29,6 @@ client.on('interactionCreate', async interaction => {
       cmd.run(client, interaction)
    }
 });
+
 
 

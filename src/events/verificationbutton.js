@@ -7,8 +7,6 @@ const { e } = require("../JSON/emojis.json");
 
 export default async function interactionButtonVerification(interaction) {
   try {
-    if (interaction.customId === "verificar") {
-
       if (!interaction.guild || !interaction.member) {
         await interaction.reply({
           content: "Erro ao processar a verificação. Por favor, tente novamente mais tarde ou entre em contato com os administradores do servidor.",
@@ -59,7 +57,7 @@ export default async function interactionButtonVerification(interaction) {
       }))
 
 
-    }
+    
   } catch (error) {
     console.error(error);
     await interaction.editReply({
