@@ -1,8 +1,5 @@
 import { ButtonStyle } from 'discord.js';
 import { createRequire } from 'node:module';
-import { handleTicketClose } from './functions/closeticket.js';
-import fileticket from './functions/fileticket.js';
-import interactionButtonVerification from '../verificationbutton.js';
 
 const require = createRequire(import.meta.url);
 const { e } = require("../../JSON/emojis.json");
@@ -12,10 +9,9 @@ export default class TicketHandler {
         this.type = null;
     }
 
-    async handleSelectMenu(interaction) {
-        if (interaction.customId === 'menu') {
-            interaction.message.edit({ components: interaction.message.components }).catch(() => { });
-            this.type = interaction.values[0];
+    async SelectMenu(interaction) {
+        this.type = interaction.values[0];
+          await interaction.message.edit({ components: interaction.message.components }).catch(() => { });
 
             const botao = {
                 type: 1,
@@ -35,17 +31,8 @@ export default class TicketHandler {
                 ephemeral: true,
                 components: [botao]
             });
-        }
 
 
-    }
-
-    async handleButton(interaction) {
-        this.type = interaction.customId
-        if (this.type == 'close-ticket') return await handleTicketClose(interaction)
-        if (this.type == 'file-ticket') return await fileticket(interaction)
-        if (this.type == 'verificar') return;
-        await this.createTicket(interaction);
     }
 
     async createTicket(interaction) {
