@@ -27,8 +27,8 @@ async function closeTicket(interaction) {
             saveImages: false,
             poweredBy: true
         });
-
-        const logchannel = interaction.client.channels.cache.get('1165706306573832212');
+        
+        const logchannel = interaction.client.channels.getById('1165706306573832212');
         if (!logchannel) return;
 
         await logchannel.send({
@@ -36,7 +36,7 @@ async function closeTicket(interaction) {
                 color: BitColors.Red,
                 author: {
                     name: `${interaction.guild.name || `Not Found`}`,
-                    icon_url: `${interaction.guild.iconURL({ dynamic: true })}`,
+                    icon_url: interaction.guild.iconURL({ dynamic: true }) || undefined,
                 },
                 fields: [
                     {
@@ -54,7 +54,7 @@ async function closeTicket(interaction) {
                 ],
             }],
             files: [attachment]
-        }).catch(() => null);
+        }).catch((err) => console.log(err));
 
         await interaction.channel.delete().catch(() => null);
     }, 5000);

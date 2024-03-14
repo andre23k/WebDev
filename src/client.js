@@ -1,9 +1,9 @@
 import "./prototypes/index.js"
+import "djs-protofy/init.js";
 process.env.TZ = "America/Sao_Paulo"
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
 import { discloud } from 'discloud.app'
 await discloud.login()
-
 const options = {
     intents: [
         GatewayIntentBits.Guilds,
