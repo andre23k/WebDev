@@ -16,5 +16,5 @@ export default async function HandleButton(interaction) {
     if (type === 'file-ticket') return await fileticket(interaction)
     if (type === 'verificar') return await interactionButtonVerification(interaction);
 
-    await ticket.createTicket(interaction);
+    await ticket.createTicket(interaction, type);
 }
