@@ -3,6 +3,7 @@ import { handleTicketClose } from "../../events/ticket/functions/closeticket.js"
 import fileticket from "../../events/ticket/functions/fileticket.js";
 import TicketHandler from "../../events/ticket/ticketCreate.js";
 import interactionButtonVerification from "../../events/verificationbutton.js";
+
 const ticket = new TicketHandler()
 
 export default async function HandleButton(interaction) {

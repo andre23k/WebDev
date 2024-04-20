@@ -8,12 +8,10 @@
     "javascript.suggest.autoImports": true,
     "javascript.updateImportsOnFileMove.enabled": "always",
     "tabnine.experimentalAutoImports": true,
-    "discord.largeImageIdling": "⏲️ Código, Café e Pomodoro",
-    "discord.lowerDetailsDebugging": "🐛 Debugging: {git_branch}",
-    "discord.lowerDetailsNoWorkspaceFound": "{file_size}",
     "extensions.ignoreRecommendations": true,
     "editor.renderLineHighlight": "gutter",
     "editor.fontLigatures": true,
+    "editor.cursorSmoothCaretAnimation": "on",
     "workbench.editor.labelFormat": "short",
     "explorer.compactFolders": false,
     "editor.semanticHighlighting.enabled": false,
@@ -39,5 +37,5 @@
         ".env.local": ".env*",
         ".env": ".env*"
     },
-    "terminal.integrated.fontSize": 12,
+    "terminal.integrated.fontSize": 13,
 }

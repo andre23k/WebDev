@@ -36,6 +36,7 @@ export default class TicketHandler {
     }
 
     async createTicket(interaction, type) {
+        if (interaction.customId === 'confirmar_close') return;
         const channel = interaction.guild.channels.cache.find(c => c.topic === interaction.user.id);
         if (channel) {
             await interaction.reply({
