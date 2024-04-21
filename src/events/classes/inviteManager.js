@@ -41,9 +41,7 @@ export class InviteManager {
         }
     }
 
-    async handleGuildMemberAdd(member, inviter, invite, error) {
-        await this.registerMemberAdd(member)
-
+    async inviteMember(member, inviter, invite, error) {
         let msg;
         const channel = member.guild.channels.cache.get("1194415819908731042");
 
@@ -72,7 +70,8 @@ export class InviteManager {
         }
         if (member.user.bot) msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, foi convidado por <@!${inviter.id || `Not Found`}>`;
 
-        channel.send(msg);
+        await channel.send(msg);
+        await this.registerMemberAdd(member)
     }
 
     updateInviteCounts(inviterId) {
@@ -88,7 +87,7 @@ export class InviteManager {
     async registerMemberAdd(member) {
         let channel = await client.channels.fetch('1194415665503797288');
         if (!channel) return
-        return await channel.send({
+        await channel.send({
             embeds: [{
                 title: `Entrou no servidor!`,
                 color: BitColors.DarkRed,
