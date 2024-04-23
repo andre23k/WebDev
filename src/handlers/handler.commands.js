@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { Routes } from "discord.js";
 import client from '../client.js';
-import { SlashCommandsLoaded } from '../events/system/systemlogs.js'
+import { SlashCommandsLoaded } from '../events/logs/systemlogs.js'
 export default async () => {
     const SlashsArray = [];
     const subfolders = fs.readdirSync(`src/commands/`);

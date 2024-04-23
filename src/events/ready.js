@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 import client from "../client.js"
-import { Readylogs, DatabaseLoaded, DatabaseCrashed } from '../events/system/systemlogs.js'
+import { Readylogs, DatabaseLoaded, DatabaseCrashed } from './logs/systemlogs.js'
 
 client.once('ready', async () => {
   import("../handlers/handler.commands.js").then(fn => fn.default(client))

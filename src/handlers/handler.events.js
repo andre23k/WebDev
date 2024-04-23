@@ -1,9 +1,8 @@
-import { EventsLoaded } from '../events/system/systemlogs.js';
+import { EventsLoaded } from '../events/logs/systemlogs.js';
+import { readdirSync } from 'fs'
 
-import '../events/ready.js'
-import '../events/functions/guildMemberAdd.js'
-import '../events/error.js'
-import '../events/interactionCreate.js'
-
+const eventsFilesNames = readdirSync('./src/events/').filter(fileName => fileName.endsWith('.js'))
+for (const eventFileName of eventsFilesNames)
+    import(`../events/${eventFileName}`)
 await EventsLoaded()
-console.log('Events | OK');
+console.log(`${[...eventsFilesNames].length} Events | OK`)

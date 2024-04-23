@@ -1,6 +1,6 @@
-import client from '../../client.js';
+import client from '../client.js';
 import { inviteTracker } from 'discord-inviter';
-import { InviteManager } from '../classes/inviteManager.js';
+import { InviteManager } from './classes/inviteManager.js';
 
 
 const tracker = new inviteTracker(client);
