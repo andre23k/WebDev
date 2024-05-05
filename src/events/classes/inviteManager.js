@@ -42,6 +42,7 @@ export class InviteManager {
     }
 
     async inviteMember(member, inviter, invite, error) {
+        await this.registerMemberAdd(member)
         let msg;
         const channel = member.guild.channels.cache.get("1194415819908731042");
 
@@ -71,7 +72,6 @@ export class InviteManager {
         if (member.user.bot) msg = `🇵🇹 | Bem-vindo ${member || `Not Found`}, foi convidado por <@!${inviter.id || `Not Found`}>`;
 
         await channel.send(msg);
-        await this.registerMemberAdd(member)
     }
 
     updateInviteCounts(inviterId) {
