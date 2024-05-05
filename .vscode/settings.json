@@ -7,7 +7,6 @@
     "workbench.startupEditor": "none",
     "javascript.suggest.autoImports": true,
     "javascript.updateImportsOnFileMove.enabled": "always",
-    "tabnine.experimentalAutoImports": true,
     "extensions.ignoreRecommendations": true,
     "editor.renderLineHighlight": "gutter",
     "editor.fontLigatures": true,

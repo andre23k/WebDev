@@ -1,5 +1,5 @@
 import "./prototypes/index.js"
-import "djs-protofy/init.js";
+import "djs-protofy/init";
 import './handlers/handler.events.js';
 process.env.TZ = "America/Sao_Paulo"
 import { Client, Collection, GatewayIntentBits } from 'discord.js'
