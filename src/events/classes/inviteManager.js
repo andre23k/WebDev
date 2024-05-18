@@ -41,14 +41,10 @@ export class InviteManager {
         }
     }
 
-    async inviteMember(member, inviter, invite, error) {
+    async inviteMember(member, inviter, invite) {
         await this.registerMemberAdd(member)
         let msg;
         const channel = member.guild.channels.cache.get("1194415819908731042");
-
-        if (error) {
-            return console.error(error);
-        }
 
         if (!this.arr.includes(member.id)) {
             if (!inviter) {
