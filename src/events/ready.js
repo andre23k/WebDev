@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
 import client from "../client.js"
-import { Readylogs, DatabaseLoaded, DatabaseCrashed } from './logs/systemlogs.js'
 
 client.once('ready', async () => {
   import("../handlers/handler.commands.js").then(fn => fn.default(client))
@@ -9,15 +8,12 @@ client.once('ready', async () => {
 
   await mongoose.connect(process.env.DATABASE_TOKEN)
     .then(async () => {
-      await DatabaseLoaded()
       console.log(`Connected Database | OK!`)
     })
     .catch(async err => {
-      await DatabaseCrashed(err)
       console.log('Mongoose Database | FAIL!\n--> ' + err)
     })
   activities()
-  Readylogs()
   console.log('Event Ready | OK')
 })
 

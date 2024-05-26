@@ -1,16 +1,31 @@
-import { EventsLoaded } from '../events/logs/systemlogs.js';
-import { readdirSync } from 'fs'
+import { promises as fsPromises } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath, pathToFileURL } from 'url';
 
-export default async function LoadEvents(){
-    const eventsFilesNames = readdirSync('./src/events/').filter(fileName => fileName.endsWith('.js'));
-    const eventsFilesFunctions= readdirSync('./src/events/functions').filter(fileName => fileName.endsWith('.js'));
+export default async function LoadEvents() {
 
-    for (const eventFileName of eventsFilesNames) {
-        await import(`../events/${eventFileName}`);
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const eventsDir = join(__dirname, '../events/');
+
+    async function getAllFiles(dir, extension, files = []) {
+        const entries = await fsPromises.readdir(dir, { withFileTypes: true });
+
+        for (const entry of entries) {
+            const fullPath = join(dir, entry.name);
+            if (entry.isDirectory()) {
+                await getAllFiles(fullPath, extension, files);
+            } else if (fullPath.endsWith(extension)) {
+                files.push(fullPath);
+            }
+        }
+
+        return files;
     }
-    for (const eventFilefunction of eventsFilesFunctions)
-        import(`../events/functions/${eventFilefunction}`)
 
-    console.log(`${[...eventsFilesNames, ...eventsFilesFunctions].length} Events | OK`)
-    await EventsLoaded();
+    const eventsFilesNames = await getAllFiles(eventsDir, '.js');
+
+    await Promise.all(eventsFilesNames.map(eventFileName => import(pathToFileURL(eventFileName).href)));
+
+    console.log(`${eventsFilesNames.length} Events | OK`);
 }
