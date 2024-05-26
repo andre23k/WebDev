@@ -38,7 +38,7 @@ export class InviteManager {
     async inviteMember(member, inviter, invite) {
         await this.registerMemberAdd(member);
     
-        const channel = member.guild.channels.cache.get("1194415819908731042");
+        const channel = member.guild.channels.getById("1194415819908731042")
         let msg;
         const memberId = member.id;
     

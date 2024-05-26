@@ -28,7 +28,7 @@ export default class TicketHandler {
 
         await interaction.reply({
             content: `${e.Info} | Para iniciar a abertura e iniciação de um ticket você precisa confirmar **Que realmente irá usar a função**.\n Não crie tickets sem utiliza-los ou testar as suas funções (apenas com permissão). Lembre-se temos logs.\n Se quiser prosseguir com o ticket, precione o botão abaixo.`,
-            ephemeral: true,
+            ephemeral,
             components: [botao]
         });
 
@@ -94,7 +94,7 @@ export default class TicketHandler {
             };
             await interaction.reply({
                 content: `${e.Info} Olá, seu ticket de ${type} foi aberto em ${channel.toString()}`,
-                ephemeral: true,
+                ephemeral,
                 components: [button]
             });
             return await channel.send({

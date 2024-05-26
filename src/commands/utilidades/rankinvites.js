@@ -47,7 +47,7 @@ export default {
             console.log(err);
             await interaction.editReply({
                 content: `${e.Saphire_triste} | Ocorreu um erro ao executar esse comando!`,
-                ephemeral: true,
+                ephemeral,
             });
         }
     },

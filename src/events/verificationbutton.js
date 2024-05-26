@@ -10,7 +10,7 @@ export default async function interactionButtonVerification(interaction) {
       if (!interaction.guild || !interaction.member) {
         await interaction.reply({
           content: "Erro ao processar a verificação. Por favor, tente novamente mais tarde ou entre em contato com os administradores do servidor.",
-          ephemeral: true,
+          ephemeral
         });
         return;
       }
@@ -23,7 +23,7 @@ export default async function interactionButtonVerification(interaction) {
       if (!role || (member && member.roles.cache.has(role.id))) {
         await interaction.reply({
           content: `Você já foi verificado anteriormente ou já possui acesso ao servidor.`,
-          ephemeral: true,
+          ephemeral,
         });
         return;
       }
@@ -33,7 +33,7 @@ export default async function interactionButtonVerification(interaction) {
 
       await interaction.reply({
         content: `Olá, ${interaction.user.username}! Você foi verificado e agora tem acesso ao servidor.`,
-        ephemeral: true,
+        ephemeral
       }).then(() => channel.send({
         embeds: [{
           title: `Checking System logs`,
@@ -62,7 +62,7 @@ export default async function interactionButtonVerification(interaction) {
     console.error(error);
     await interaction.editReply({
       content: "Desculpe, ocorreu um erro ao processar sua verificação. Por favor, tente novamente mais tarde ou entre em contato com os administradores do servidor.",
-      ephemeral: true,
+      ephemeral,
     });
   }
 }

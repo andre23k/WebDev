@@ -7,7 +7,7 @@ export default async interaction => {
 
     await interaction.reply({
         content: `${e.Load} | Solicitando start do client a Discloud Host...`,
-        fetchReply: true
+        fetchReply
     })
 
     const response = await discloud.apps.start('1708292440198')
