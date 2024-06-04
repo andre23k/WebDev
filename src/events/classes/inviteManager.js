@@ -8,7 +8,7 @@ const { e } = require("../../JSON/emojis.json");
 export class InviteManager {
     constructor() {
         this.inviteCounts = new Map();
-        this.arr = new Set();
+        this.membersRegistered = new Set();
     }
 
     async loadInviteCounts(inviterId) {
@@ -18,7 +18,7 @@ export class InviteManager {
                 this.inviteCounts.set(inviterId, inviteCounts.count);
             }
         } catch (error) {
-            console.error('Erro ao carregar contagens de convites: ', error);
+            console.error('Erro ao carregar contagens de convites:', error);
         }
     }
 
@@ -31,48 +31,60 @@ export class InviteManager {
                 { upsert: true }
             );
         } catch (error) {
-            console.error('Erro ao salvar', error);
+            console.error('Erro ao salvar contagens de convites:', error);
         }
     }
 
     async inviteMember(member, inviter, invite) {
-        await this.registerMemberAdd(member);
-    
-        const channel = member.guild.channels.getById("1194415819908731042")
-        let msg;
-        const memberId = member.id;
-    
-        if (!this.arr.has(memberId)) {
-            this.arr.add(memberId);
-    
+        try {
+            await this.registerMemberAdd(member);
+
+            const channel = await member.guild.channels.fetch("1194415819908731042");
+            if (!channel) return;
+
+            let message;
+            const memberId = member.id;
+
+            if (!this.membersRegistered.has(memberId)) {
+                this.membersRegistered.add(memberId);
+                message = await this.generateWelcomeMessage(member, inviter, invite);
+            } else {
+                message = `🇵🇹 | Bem-vindo ${member}, entrou no servidor, mas já esteve aqui!`;
+            }
+
+            await channel.send(message);
+        } catch (error) {
+            console.error('Erro ao processar inviteMember:', error);
+        }
+    }
+
+    async generateWelcomeMessage(member, inviter, invite) {
+        try {
+            if (member.user.bot) {
+                return `🇵🇹 | Bem-vindo ${member}, foi convidado por <@!${inviter.id}>`;
+            }
+
             if (!inviter) {
-                msg = `🇵🇹 | Bem-vindo ${member}, foi convidado, mas não consegui descobrir quem o convidou!`;
-            } else if (memberId === inviter.id) {
-                msg = `🇵🇹 | Bem-vindo ${member}, entrou no servidor pelo próprio convite!`;
+                return `🇵🇹 | Bem-vindo ${member}, foi convidado, mas não consegui descobrir quem o convidou!`;
+            } else if (member.id === inviter.id) {
+                return `🇵🇹 | Bem-vindo ${member}, entrou no servidor pelo próprio convite!`;
             } else if (member.guild.vanityURLCode === invite?.code) {
-                msg = `🇵🇹 | ${member} entrou pelo convite personalizado!`;
+                return `🇵🇹 | ${member} entrou pelo convite personalizado!`;
             } else {
                 const inviterId = inviter.id;
                 await this.loadInviteCounts(inviterId);
                 this.updateInviteCounts(inviterId);
-                msg = `🇵🇹 | Bem-vindo ${member}, foi convidado por <@!${inviterId}>. Que agora tem ${this.getInviteCount(inviterId)} invites.`;
                 await this.saveInviteCounts(inviterId);
+                return `🇵🇹 | Bem-vindo ${member}, foi convidado por <@!${inviterId}>. Que agora tem ${this.getInviteCount(inviterId)} invites.`;
             }
-        } else {
-            msg = `🇵🇹 | Bem-vindo ${member}, entrou no servidor, mas já esteve aqui!`;
+        } catch (error) {
+            console.error('Erro ao gerar mensagem de boas-vindas:', error);
+            return `🇵🇹 | Bem-vindo ${member}, ocorreu um erro ao tentar gerar a mensagem de boas-vindas.`;
         }
-    
-        if (member.user.bot) {
-            msg = `🇵🇹 | Bem-vindo ${member}, foi convidado por <@!${inviter.id}>`;
-        }
-    
-        await channel.send(msg);
-        
-        return;
     }
 
     updateInviteCounts(inviterId) {
-        let currentCount = this.inviteCounts.get(inviterId) || 0;
+        const currentCount = this.inviteCounts.get(inviterId) || 0;
         this.inviteCounts.set(inviterId, currentCount + 1);
     }
 
@@ -81,17 +93,24 @@ export class InviteManager {
     }
 
     async registerMemberAdd(member) {
-        const channel = await client.channels.fetch('1194415665503797288');
-        if (!channel) return;
-        await channel.send({
-            embeds: [{
-                title: `Entrou no servidor!`,
-                color: BitColors.DarkRed,
-                description: `${e.Ids} **Membro:** ${member}\n⠀ ${e.Ids} **ID:**\`${member.user.id}\`\n⠀ ${e.Ids} **Tag:**\`${member.user.tag}\` `,
-                author: { name: client.user.username, iconURL: client.user.displayAvatarURL({ dynamic: true }) },
-                thumbnail: { url: member.user.displayAvatarURL({ forceStatic: true }) || null }
-            }]
-        });
-        return;
+        try {
+            const channel = await client.channels.fetch('1194415665503797288');
+            if (!channel) return;
+
+            await channel.send({
+                embeds: [{
+                    title: 'Entrou no servidor!',
+                    color: BitColors.DarkRed,
+                    description: `${e.Ids} **Membro:** ${member}\n⠀ ${e.Ids} **ID:** \`${member.user.id}\`\n⠀ ${e.Ids} **Tag:** \`${member.user.tag}\` `,
+                    author: {
+                        name: client.user.username,
+                        iconURL: client.user.displayAvatarURL({ dynamic: true })
+                    },
+                    thumbnail: { url: member.user.displayAvatarURL({ forceStatic: true }) || null }
+                }]
+            });
+        } catch (error) {
+            console.error('Erro ao registrar a entrada do membro:', error);
+        }
     }
 }
