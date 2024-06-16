@@ -6,6 +6,7 @@ const tracker = new inviteTracker(client);
 const inviteManager = new InviteManager();
 
 tracker.on("guildMemberAdd", async (member, inviter, invite) => {
+    console.log(`Evento guildMemberAdd acionado para o membro: ${member.user.tag}`);
     if (member.guild.id !== "1109464496164048996") return;
     
     try {

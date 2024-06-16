@@ -96,7 +96,7 @@ export class InviteManager {
         try {
             const channel = await client.channels.fetch('1194415665503797288');
             if (!channel) return;
-
+            
             await channel.send({
                 embeds: [{
                     title: 'Entrou no servidor!',
