@@ -1,28 +1,79 @@
-import { PermissionFlagsBits } from "discord.js"
-import { PermissionsTranslate } from '../../util/constants.js'
-import TicketHandler from '../../events/ticket/ticketCreate.js';
-import client from "../../client.js";
-import { createRequire } from 'node:module'
-const require = createRequire(import.meta.url)
-const { e } = require("../../JSON/emojis.json")
-const ticketHandler = new TicketHandler(client);
+import { ApplicationCommandOptionType, ChannelType, PermissionFlagsBits } from "discord.js";
+import { PermissionsTranslate } from '../../util/constants.js';
+import { createRequire } from 'node:module';
+import Database from "../../database/Database.js";
+const require = createRequire(import.meta.url);
+const { e } = require("../../JSON/emojis.json");
 
 export default {
     name: "ticket",
     description: "〔🛠 Admin〕 Ativa o painel de ticket.",
+    type: ApplicationCommandOptionType.Subcommand,
+    dm_permission: false,
+    options: [
+        {
+            name: 'channel-config',
+            description: 'Para qual canal o ticket vai?',
+            type: ApplicationCommandOptionType.Channel,
+            channelTypes: [ChannelType.GuildText],
+            required: true,
+        },
+        {
+            name: "category-ticket",
+            description: "Qual categoria o ticket será criado?",
+            type: ApplicationCommandOptionType.Channel,
+            channelTypes: [ChannelType.GuildCategory],
+            required: true,
+        },
+        {
+            name: "roles-moderation",
+            description: "Quais cargos deseja colocar para atender e administrar o ticket?",
+            type: ApplicationCommandOptionType.Role,
+            required: true,
+        },
+        {
+            name: "channel-log",
+            description: "Para qual canal os logs dos tickets serão enviados?",
+            type: ApplicationCommandOptionType.Channel,
+            channelTypes: [ChannelType.GuildText],
+            required: true,
+        },
+    ],
 
     run: async (client, interaction, args) => {
-        if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageChannels) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator))
-            return interaction.reply({
+        const ChannelConfigId = interaction.options.getChannel('channel-config')?.id;
+        const ChannelLogId = interaction.options.getChannel('channel-log')?.id;
+        const RolesModeration = interaction.options.getRole('roles-moderation')?.id;
+        const CategoryId = interaction.options.getChannel("category-ticket");
+        const guildId = interaction.guild.id;
+
+        if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageChannels) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator)) {
+            return await interaction.reply({
                 content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageChannels}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
-                ephemeral: true
-            })
+                ephemeral
+            });
+        }
+
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-            interaction.reply({
+            return await interaction.reply({
                 content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
-                ephemeral: true
-            })
-        } else {
+                ephemeral
+            });
+        }
+
+        try {
+            await Database.Ticket.findOneAndUpdate(
+                { guildId: guildId },
+                {
+                    guildId: guildId,
+                    channelconfig: ChannelConfigId,
+                    channellog: ChannelLogId,
+                    categoryId: CategoryId,
+                    rolemodId: RolesModeration
+                },
+                { upsert: true, new: true }
+            );
+
             const selectMenu = {
                 type: 1,
                 components: [{
@@ -57,23 +108,33 @@ export default {
                         },
                     ]
                 }]
-            }
+            };
+
             await interaction.reply({
                 content: `${e.Saphire_ok} | Ticket ativado com sucesso!`,
-                ephemeral: true
-            })
-            await interaction.channel.send({
-                embeds: [{
-                    author: ({ name: "Criar Ticket" }),
-                    color: 0x2f3136,
-                    description: `Para criar um ticket, selecione o tópico que você precisa na seleção abaixo..`,
-                    thumbnail: {
-                        url: `https://media.discordapp.net/attachments/1194433381019164682/1195792969010266302/6b7280b1f7c377f6773f5b81b9bb49bf.png?ex=65b547fc&is=65a2d2fc&hm=1a0f2e0a46f87e080bc293e448a6c401da54e64d036e3246c7a4c8199469c975&=&format=webp&quality=lossless&width=54&height=54`
-                    }
-                }],
-                components: [selectMenu]
+                ephemeral
+            });
 
-            })
+            const channelConfig = client.channels.cache.get(ChannelConfigId);
+            if (channelConfig)
+                return await channelConfig.send({
+                    embeds: [{
+                        author: { name: "Criar Ticket" },
+                        color: 0x2f3136,
+                        description: `Para criar um ticket, selecione o tópico que você precisa na seleção abaixo.`,
+                        thumbnail: {
+                            url: `https://media.discordapp.net/attachments/1194433381019164682/1195792969010266302/6b7280b1f7c377f6773f5b81b9bb49bf.png?ex=65b547fc&is=65a2d2fc&hm=1a0f2e0a46f87e080bc293e448a6c401da54e64d036e3246c7a4c8199469c975&=&format=webp&quality=lossless&width=54&height=54`
+                        }
+                    }],
+                    components: [selectMenu]
+                });
+
+        } catch (error) {
+            console.error(error);
+            await interaction.reply({
+                content: `${e.Saphire_recusado} | Ocorreu um erro ao configurar o painel de ticket. Por favor, tente novamente mais tarde.`,
+                ephemeral: true
+            });
         }
     }
-}
+};

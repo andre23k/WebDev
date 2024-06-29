@@ -1,6 +1,6 @@
 import { ButtonStyle } from 'discord.js';
 import { createRequire } from 'node:module';
-
+import Database from '../../database/Database.js'
 const require = createRequire(import.meta.url);
 const { e } = require("../../JSON/emojis.json");
 
@@ -41,7 +41,7 @@ export default class TicketHandler {
         if (channel) {
             await interaction.reply({
                 content: `${e.Error} Você já possui um ticket aberto em ${channel}.`,
-                ephemeral: true
+                ephemeral
             });
             return;
         }
@@ -64,11 +64,11 @@ export default class TicketHandler {
                 }
             ]
         }
-
+        const config = await Database.Ticket.findOne({ guildId: interaction.guild.id });
         await interaction.guild.channels.create({
             name: `${interaction.user.username}-${type || `ticket`}`,
             type: 0,
-            parent: "1165705261026132011",
+            parent: config.categoryId,
             topic: interaction.user.id,
             permissionOverwrites: [
                 {

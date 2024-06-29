@@ -4,6 +4,8 @@ import discordTranscripts from 'discord-html-transcripts';
 import { createRequire } from 'node:module'
 import { BitColors } from '../../../util/constants.js';
 import { leaveTicket } from './leaveticket.js';
+import Database from '../../../database/Database.js';
+import client from '../../../client.js'
 const require = createRequire(import.meta.url)
 const { e } = require("../../../JSON/emojis.json")
 
@@ -50,11 +52,12 @@ async function closeTicket(interaction) {
                     saveImages: false,
                     poweredBy: true
                 });
+                const config = await Database.Ticket.findOne({ guildId: interaction.guild.id });
+                if (!config) return;
 
-                const logchannel = interaction.client.channels.getById('1165706306573832212');
-                if (!logchannel) return;
-
-                await logchannel.send({
+                const channellog = client.channels.cache.get(config.channellog);
+                if (channellog)
+                await channellog.send({
                     embeds: [{
                         color: BitColors.Red,
                         author: {
