@@ -1,17 +1,12 @@
 import client from '../../client.js';
 import { inviteTracker } from 'discord-inviter';
-import { InviteManager } from '../classes/inviteManager.js';
+import inviteMember from '../functions/inviteManager.js';
+import Database from '../../database/Database.js';
 
 const tracker = new inviteTracker(client);
-const inviteManager = new InviteManager();
 
 tracker.on("guildMemberAdd", async (member, inviter, invite) => {
-    console.log(`Evento guildMemberAdd acionado para o membro: ${member.user.tag}`);
-    if (member.guild.id !== "1109464496164048996") return;
-    
-    try {
-        await inviteManager.inviteMember(member, inviter, invite);
-    } catch (error) {
-        console.error('Erro ao processar guildMemberAdd:', error);
-    }
+    const data = await Database.Register.findOne({ guildId: member.guild.id })
+    if (data && data.activeEvent)
+        await inviteMember(member, inviter, invite);
 });
