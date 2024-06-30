@@ -11,7 +11,7 @@
     "parse-ms": "^4.0.0"
   },
   "name": "fivem-portugal",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
