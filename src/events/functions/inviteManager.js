@@ -47,15 +47,27 @@ async function getInviteCount(guildId, inviterId) {
 
 async function saveInviteCount(guildId, inviterId) {
     try {
-        await Database.Guild.findOneAndUpdate(
-            { Id: guildId, "invites.userid": inviterId },
-            { $inc: { "invites.$.count": 1 } }, 
-            { upsert: true }
-        );
+        const guild = await Database.Guild.findOne({ Id: guildId }); 
+        if (!guild) return;
+
+        const existingInvite = guild.invites.find(invite => invite.userid === inviterId);
+
+        if (existingInvite) {
+            await Database.Guild.findOneAndUpdate(
+                { Id: guildId, "invites.userid": inviterId },
+                { $inc: { "invites.$.count": 1 } }
+            );
+        } else {
+            await Database.Guild.findOneAndUpdate(
+                { Id: guildId },
+                { $push: { invites: { userid: inviterId, count: 1 } } }
+            );
+        }
     } catch (error) {
         console.error('Erro ao salvar contagem de convites:', error);
     }
 }
+
 
 async function registerMemberAdd(member) {
     try {

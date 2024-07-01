@@ -26,6 +26,13 @@ export default class TicketHandler {
                 },
             ]
         }
+        const data = await Database.Guild.findOne({ guildId: interaction.guild.id });
+        if (!data || !data.ticket || !data.ticket.categoryId || !data.ticket.channelconfig) {
+            return await interaction.reply({
+                content: `${e.Desespero} | Eiei não encontrei nenhum dado salvo no meu banco de dados desse servidor!`,
+                ephemeral
+            })
+        }
 
         await interaction.reply({
             content: `${e.Info} | Para iniciar a abertura e iniciação de um ticket você precisa confirmar **Que realmente irá usar a função**.\n Não crie tickets sem utiliza-los ou testar as suas funções (apenas com permissão). Lembre-se temos logs.\n Se quiser prosseguir com o ticket, precione o botão abaixo.`,
@@ -66,11 +73,15 @@ export default class TicketHandler {
             ]
         }
         const data = await Database.Guild.findOne({ guildId: interaction.guild.id });
+        if (!data || !data.ticket || !data.ticket.categoryId || !data.ticket.channelconfig) {
+            console.log(`Dados de configuração do ticket não encontrados para a guilda ${interaction.guild.id}`);
+        }
         const category = client.channels.cache.get(data.ticket.categoryId);
+        if (!category) return
         await interaction.guild.channels.create({
             name: `${interaction.user.username}-${type || `ticket`}`,
             type: 0,
-            parent: category, 
+            parent: category,
             topic: interaction.user.id,
             permissionOverwrites: [
                 {

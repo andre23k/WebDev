@@ -34,65 +34,73 @@ export default {
     ],
 
     run: async (client, interaction) => {
-        const ChannelConfigId = interaction.options.getChannel('channel-config')?.id;
-        const ChannellogId = interaction.options.getChannel('channel-log')?.id;
-        const Roleverification = interaction.options.getRole('role-verification')?.id
-        const guildId = interaction.guild.id;
+       try {
+            const ChannelConfigId = interaction.options.getChannel('channel-config')?.id;
+            const ChannellogId = interaction.options.getChannel('channel-log')?.id;
+            const Roleverification = interaction.options.getRole('role-verification')?.id;
+            const guildId = interaction.guild.id;
 
-        if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageRoles) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator))
-            return await interaction.reply({
-                content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageRoles}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
-                ephemeral
-            })
-        if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-            return await interaction.reply({
-                content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
-                ephemeral
-            })
-        }
+            if (!interaction.guild.me?.permissions.has(PermissionFlagsBits.ManageRoles) || !interaction.guild.me?.permissions.has(PermissionFlagsBits.Administrator)) {
+                return await interaction.reply({
+                    content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageRoles}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
+                    ephemeral: true
+                });
+            }
 
-        await Database.Guild.findOneAndUpdate(
-            { Id: guildId },
-            {
-                $set: {
-                    
-                    'verification.channelconfig': ChannelConfigId,
-                    'verification.channellog': ChannellogId,
-                    'verification.roleverifcationId': Roleverification
+            if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+                return await interaction.reply({
+                    content: `${e.Saphire_recusado} | Você não tem permissão para usar esse comando.`,
+                    ephemeral: true
+                });
+            }
+
+            await Database.Guild.findOneAndUpdate(
+                { Id: guildId },
+                {
+                    $set: {
+                        'verification.channelconfig': ChannelConfigId,
+                        'verification.channellog': ChannellogId,
+                        'verification.roleverifcationId': Roleverification
+                    },
                 },
-            },
-            { upsert: true, new: true }
-        );
+                { upsert: true, new: true }
+            );
 
-        await interaction.reply({
-            content: `Sistema de verificação foi enviado com sucesso.`,
-            ephemeral
-        })
+            await interaction.reply({
+                content: `Sistema de verificação foi enviado com sucesso.`,
+                ephemeral: true
+            });
 
-        const channelConfig = client.channels.cache.get(ChannelConfigId);
-        if (channelConfig)
-            return await channelConfig.send({
-                embeds: [{
-                    title: `Sistema de verificação FiveM Portugal`,
-                    description: `Clique no botão abaixo para receber acesso ao servidor.`,
-                    color: BitColors.Blue
-                }],
-                components: [
-                    {
-                        type: 1,
-                        components: [
-                            {
-                                type: 2,
-                                label: `Verificar`,
-                                emoji: `${e.Ok}`,
-                                custom_id: `verificar`,
-                                style: ButtonStyle.Primary,
-                            }
-                        ]
-                    }
-                ]
-            })
-
-
+            const channelConfig = client.channels.cache.get(ChannelConfigId);
+            if (channelConfig) {
+                await channelConfig.send({
+                    embeds: [{
+                        title: `Sistema de verificação FiveM Portugal`,
+                        description: `Clique no botão abaixo para receber acesso ao servidor.`,
+                        color: BitColors.Blue
+                    }],
+                    components: [
+                        {
+                            type: 1,
+                            components: [
+                                {
+                                    type: 2,
+                                    label: `Verificar`,
+                                    emoji: `${e.Ok}`,
+                                    custom_id: `verificar`,
+                                    style: ButtonStyle.Primary,
+                                }
+                            ]
+                        }
+                    ]
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao executar o comando verificar:', error);
+            await interaction.reply({
+                content: `${e.Desespero} | Ocorreu um erro ao executar esse comando!`,
+                ephemeral: true
+            });
+        }
     }
-}
+};

@@ -29,21 +29,21 @@ export default {
         const Welcome = interaction.options.getChannel('welcome-system')?.id;
         const Invite = interaction.options.getChannel('invite-system')?.id;
         const guildid = interaction.guild.id;
-
-        if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageGuild) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator)) {
-            return await interaction.reply({
-                content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageGuild}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
-                ephemeral
-            });
-        }
-
-        if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-            return await interaction.reply({
-                content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
-                ephemeral
-            });
-        }
         try {
+            if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageGuild) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator)) {
+                return await interaction.reply({
+                    content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageGuild}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
+                    ephemeral
+                });
+            }
+
+            if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+                return await interaction.reply({
+                    content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
+                    ephemeral
+                });
+            }
+
             await interaction.reply({
                 content: `${e.Anya_pulo} | Sistema de registro ativado com sucesso no servidor!`,
                 ephemeral
@@ -62,7 +62,7 @@ export default {
             );
         } catch (err) {
             await interaction.reply({
-                content:`${e.Desespero} | Ocorreu um erro ao executar esse comando!`,
+                content: `${e.Desespero} | Ocorreu um erro ao executar esse comando! `, err,
                 ephemeral
             })
         }
