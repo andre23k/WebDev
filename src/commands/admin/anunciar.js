@@ -31,18 +31,18 @@ export default {
     if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageMessages) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator))
       return interaction.reply({
         content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageMessages}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
-        ephemeral: true
+        ephemeral
       })
     if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       interaction.reply({
         content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
-        ephemeral: true
+        ephemeral
       })
     } else {
 
       interaction.reply({
         content: `${e.Ok} | Anúncio enviado com sucesso!`,
-        ephemeral: true
+        ephemeral
       })
 
       await channel.send({

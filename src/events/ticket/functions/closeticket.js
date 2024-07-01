@@ -52,10 +52,10 @@ async function closeTicket(interaction) {
                     saveImages: false,
                     poweredBy: true
                 });
-                const config = await Database.Ticket.findOne({ guildId: interaction.guild.id });
-                if (!config) return;
+                const data = await Database.Guild.findOne({ guildId: interaction.guild.id });
+                if (!data) return;
 
-                const channellog = client.channels.cache.get(config.channellog);
+                const channellog = client.channels.cache.get(data.ticket.channellog);
                 if (channellog)
                 await channellog.send({
                     embeds: [{

@@ -42,29 +42,31 @@ export default {
         if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageRoles) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator))
             return await interaction.reply({
                 content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageRoles}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
-                ephemeral: true
+                ephemeral
             })
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             return await interaction.reply({
                 content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
-                ephemeral: true
+                ephemeral
             })
         }
 
-        await Database.Verification.findOneAndUpdate(
-            { guildId: guildId },
+        await Database.Guild.findOneAndUpdate(
+            { Id: guildId },
             {
-                guildId: guildId,
-                channelconfig: ChannelConfigId,
-                channellog: ChannellogId,
-                roleverifcationId: Roleverification
+                $set: {
+                    
+                    'verification.channelconfig': ChannelConfigId,
+                    'verification.channellog': ChannellogId,
+                    'verification.roleverifcationId': Roleverification
+                },
             },
             { upsert: true, new: true }
         );
 
         await interaction.reply({
             content: `Sistema de verificação foi enviado com sucesso.`,
-            ephemeral: true
+            ephemeral
         })
 
         const channelConfig = client.channels.cache.get(ChannelConfigId);

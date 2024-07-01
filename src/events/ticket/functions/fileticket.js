@@ -5,7 +5,7 @@ const { e } = require("../../../JSON/emojis.json")
 
 export default async function fileticket(interaction) {
     if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
-        await interaction.reply({ content: `${e.Error} Você não tem permissão para realizar essa ação.`, ephemeral: true })
+        await interaction.reply({ content: `${e.Error} Você não tem permissão para realizar essa ação.`, ephemeral })
     } else {
         const topicmember = interaction.channel.topic;
         if (topicmember) {
@@ -16,7 +16,7 @@ export default async function fileticket(interaction) {
         if (!topicmember) return
         await interaction.reply({
             content: `${e.Info} | Este ticket já foi arquivado!`,
-            ephemeral: true
+            ephemeral
         })
 
         await interaction.channel.setTopic('').catch(() => null)

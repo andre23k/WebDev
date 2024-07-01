@@ -35,13 +35,13 @@ export default {
         if (!authorizedUserIds.includes(interaction.user.id)) {
             return interaction.reply({
                 content: `${e.Saphire_recusado} | Apenas usuários autorizados podem usar esse comando.`,
-                ephemeral: true
+                ephemeral
             });
         }
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             interaction.reply({
                 content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
-                ephemeral: true
+                ephemeral
             })
         } else {
             const { options } = interaction
@@ -51,7 +51,7 @@ export default {
 
             return await interaction.reply({
                 content: `${e.Saphire_recusado} | ID da OPTION não encontrado ou sem função definida.`,
-                ephemeral: true
+                ephemeral
             })
         }
     }

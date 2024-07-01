@@ -16,19 +16,22 @@ export default {
                 content: `${e.Load} | Ok, só um segundo..`,
             });
 
-            const userId = interaction.user.id;
-            const inviteRanking = await Database.Invite.find({})
-                .sort({ count: -1 })
-                .limit(10);
+            const guildId = interaction.guild.id;
+            const guildData = await Database.Guild.findOne({ Id: guildId });
 
-            const userIndex = inviteRanking.findIndex((user) => user.userid === userId);
-            const userRanking = userIndex !== -1 ? userIndex + 1 : '^2000';
-
-            if (inviteRanking.length === 0) {
+            if (!guildData || !guildData.invites || guildData.invites.length === 0) {
                 return interaction.editReply({
                     content: `${e.Saphire_triste} | Nenhum convite registrado ainda.`,
                 });
             }
+
+            const inviteRanking = guildData.invites
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 10);
+
+            const userId = interaction.user.id;
+            const userIndex = inviteRanking.findIndex((user) => user.userid === userId);
+            const userRanking = userIndex !== -1 ? userIndex + 1 : '^2000';
 
             await interaction.editReply({
                 content: null,
@@ -44,10 +47,10 @@ export default {
                 }],
             });
         } catch (err) {
-            console.log(err);
+            console.error('Erro ao executar comando rankinvites:', err);
             await interaction.editReply({
                 content: `${e.Saphire_triste} | Ocorreu um erro ao executar esse comando!`,
-                ephemeral,
+                ephemeral: true,
             });
         }
     },

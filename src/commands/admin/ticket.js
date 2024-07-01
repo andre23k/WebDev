@@ -62,14 +62,15 @@ export default {
         }
 
         try {
-            await Database.Ticket.findOneAndUpdate(
-                { guildId: guildId },
+            await Database.Guild.findOneAndUpdate(
+                { Id: guildId },
                 {
-                    guildId: guildId,
-                    channelconfig: ChannelConfigId,
-                    channellog: ChannelLogId,
-                    categoryId: CategoryId,
-                    rolemodId: RolesModeration
+                    $set: {
+                        'ticket.channelconfig': ChannelConfigId,
+                        'ticket.channellog': ChannelLogId,
+                        'ticket.categoryId': CategoryId,
+                        'ticket.rolemodId': RolesModeration
+                    }
                 },
                 { upsert: true, new: true }
             );
@@ -133,7 +134,7 @@ export default {
             console.error(error);
             await interaction.reply({
                 content: `${e.Saphire_recusado} | Ocorreu um erro ao configurar o painel de ticket. Por favor, tente novamente mais tarde.`,
-                ephemeral: true
+                ephemeral
             });
         }
     }

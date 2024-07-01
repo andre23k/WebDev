@@ -18,9 +18,9 @@ export default async function interactionButtonVerification(interaction) {
 
     const memberId = interaction.user.id;
     const member = interaction.guild.members.cache.get(memberId);
-    const data = await Database.Verification.findOne({ guildId: interaction.guild.id })
-
-    const role = interaction.guild.roles.cache.get(data.roleverifcationId);
+    const data = await Database.Guild.findOne({ Id: interaction.guild.id })
+    const role = interaction.guild.roles.cache.get(data.verification.roleverifcationId);
+    
     if (!role || (member && member.roles.cache.has(role.id))) {
       await interaction.reply({
         content: `Você já foi verificado anteriormente ou já possui acesso ao servidor.`,
@@ -28,7 +28,7 @@ export default async function interactionButtonVerification(interaction) {
       });
       return;
     }
-    const channellog = client.channels.cache.get(data.channellog);
+    const channellog = client.channels.cache.get(data.verification.channellog);
 
     await member.roles.add(role.id, "Verificação");
 
@@ -54,7 +54,7 @@ export default async function interactionButtonVerification(interaction) {
       }]
     })).catch(async () => await interaction.editReply({
       content: `${e.Saphire_triste} | Ocorreu um erro ao se verificar.`,
-      ephemeral: true
+      ephemeral
     }))
 
 

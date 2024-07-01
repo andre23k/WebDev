@@ -5,26 +5,27 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { e } = require("../../JSON/emojis.json");
 
-let inviteCounts = new Map();
-let membersRegistered = new Set();
-
-
 export default async function inviteMember(member, inviter, invite) {
     try {
         await registerMemberAdd(member);
 
-        const data = await Database.Register.findOne({ guildId: member.guild.id });
-        const channel = client.channels.cache.get(data.invitechannelId);
+        const data = await Database.Guild.findOne({ Id: member.guild.id });
+        const channel = client.channels.cache.get(data.register.invitechannelId);
         if (!channel) return;
 
         let message;
-        const memberId = member.id;
 
-        if (!membersRegistered.has(memberId)) {
-            membersRegistered.add(memberId);
-            message = await generateWelcomeMessage(member, inviter, invite);
+        if (!inviter) {
+            message = `🇵🇹 | Bem-vindo ${member}, foi convidado, mas não consegui descobrir quem o convidou!`;
+        } else if (member.id === inviter.id) {
+            message = `🇵🇹 | Bem-vindo ${member}, entrou no servidor pelo próprio convite!`;
+        } else if (member.guild.vanityURLCode === invite?.code) {
+            message = `🇵🇹 | ${member} entrou pelo convite personalizado!`;
         } else {
-            message = `🇵🇹 | Bem-vindo ${member}, entrou no servidor, mas já esteve aqui!`;
+            const inviterId = inviter.id;
+            await saveInviteCount(member.guild.id, inviterId);
+            const inviteCount = await getInviteCount(member.guild.id, inviterId);
+            message = `🇵🇹 | Bem-vindo ${member}, foi convidado por <@!${inviterId}>. Que agora tem ${inviteCount} invites.`;
         }
 
         await channel.send(message);
@@ -33,36 +34,33 @@ export default async function inviteMember(member, inviter, invite) {
     }
 }
 
-
-async function loadInviteCounts(inviterId) {
+async function getInviteCount(guildId, inviterId) {
     try {
-        const inviteCountsData = await Database.Invite.findOne({ userid: inviterId });
-        if (inviteCountsData) {
-            inviteCounts.set(inviterId, inviteCountsData.count);
-        }
+        const inviteCountsData = await Database.Guild.findOne({ Id: guildId, "invites.userid": inviterId });
+        return inviteCountsData ? inviteCountsData.invites[0].count : 0;
     } catch (error) {
         console.error('Erro ao carregar contagens de convites:', error);
+        return 0;
     }
 }
 
-async function saveInviteCounts(inviterId) {
+
+async function saveInviteCount(guildId, inviterId) {
     try {
-        const count = inviteCounts.get(inviterId) || 0;
-        await Database.Invite.updateOne(
-            { userid: inviterId },
-            { $set: { count: count } },
+        await Database.Guild.findOneAndUpdate(
+            { Id: guildId, "invites.userid": inviterId },
+            { $inc: { "invites.$.count": 1 } }, 
             { upsert: true }
         );
     } catch (error) {
-        console.error('Erro ao salvar contagens de convites:', error);
+        console.error('Erro ao salvar contagem de convites:', error);
     }
 }
 
 async function registerMemberAdd(member) {
-    try {   
-       
-        const data = await Database.Register.findOne({ guildId: member.guild.id });
-        const channel = client.channels.cache.get(data.welcomechannelId);
+    try {
+        const data = await Database.Guild.findOne({ Id: member.guild.id });
+        const channel = client.channels.cache.get(data.register.welcomechannelId);
         if (!channel) return;
 
         await channel.send({
@@ -79,39 +77,5 @@ async function registerMemberAdd(member) {
         });
     } catch (error) {
         console.error('Erro ao registrar a entrada do membro:', error);
-    }
-}
-
-function updateInviteCounts(inviterId) {
-    const currentCount = inviteCounts.get(inviterId) || 0;
-    inviteCounts.set(inviterId, currentCount + 1);
-}
-
-function getInviteCount(inviterId) {
-    return inviteCounts.get(inviterId) || 0;
-}
-
-async function generateWelcomeMessage(member, inviter, invite) {
-    try {
-        if (member.user.bot) {
-            return `🇵🇹 | Bem-vindo ${member}, foi convidado por <@!${inviter.id}>`;
-        }
-
-        if (!inviter) {
-            return `🇵🇹 | Bem-vindo ${member}, foi convidado, mas não consegui descobrir quem o convidou!`;
-        } else if (member.id === inviter.id) {
-            return `🇵🇹 | Bem-vindo ${member}, entrou no servidor pelo próprio convite!`;
-        } else if (member.guild.vanityURLCode === invite?.code) {
-            return `🇵🇹 | ${member} entrou pelo convite personalizado!`;
-        } else {
-            const inviterId = inviter.id;
-            await loadInviteCounts(inviterId);
-            updateInviteCounts(inviterId);
-            await saveInviteCounts(inviterId);
-            return `🇵🇹 | Bem-vindo ${member}, foi convidado por <@!${inviterId}>. Que agora tem ${getInviteCount(inviterId)} invites.`;
-        }
-    } catch (error) {
-        console.error('Erro ao gerar mensagem de boas-vindas:', error);
-        return `🇵🇹 | Bem-vindo ${member}, ocorreu um erro ao tentar gerar a mensagem de boas-vindas.`;
     }
 }

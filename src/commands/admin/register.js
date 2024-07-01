@@ -43,21 +43,28 @@ export default {
                 ephemeral
             });
         }
+        try {
+            await interaction.reply({
+                content: `${e.Anya_pulo} | Sistema de registro ativado com sucesso no servidor!`,
+                ephemeral
+            })
 
-        await interaction.reply({
-            content: `${e.Anya_pulo} | Sistema de registro ativado com sucesso no servidor!`,
-            ephemeral
-        })
-
-        await Database.Register.findOneAndUpdate(
-            { guildId: guildid },
-            {
-                guildId: guildid,
-                welcomechannelId: Welcome,
-                invitechannelId: Invite,
-                activeEvent: true
-            },
-            { upsert: true, new: true }
-        );
+            await Database.Guild.findOneAndUpdate(
+                { Id: guildid },
+                {
+                    $set: {
+                        'register.welcomechannelId': Welcome,
+                        'register.invitechannelId': Invite,
+                        'register.activeEvent': true,
+                    }
+                },
+                { upsert: true, new: true }
+            );
+        } catch (err) {
+            await interaction.reply({
+                content:`${e.Desespero} | Ocorreu um erro ao executar esse comando!`,
+                ephemeral
+            })
+        }
     }
 }

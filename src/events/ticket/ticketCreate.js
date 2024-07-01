@@ -1,6 +1,7 @@
 import { ButtonStyle } from 'discord.js';
 import { createRequire } from 'node:module';
 import Database from '../../database/Database.js'
+import client from '../../client.js';
 const require = createRequire(import.meta.url);
 const { e } = require("../../JSON/emojis.json");
 
@@ -64,11 +65,12 @@ export default class TicketHandler {
                 }
             ]
         }
-        const config = await Database.Ticket.findOne({ guildId: interaction.guild.id });
+        const data = await Database.Guild.findOne({ guildId: interaction.guild.id });
+        const category = client.channels.cache.get(data.ticket.categoryId);
         await interaction.guild.channels.create({
             name: `${interaction.user.username}-${type || `ticket`}`,
             type: 0,
-            parent: config.categoryId,
+            parent: category, 
             topic: interaction.user.id,
             permissionOverwrites: [
                 {

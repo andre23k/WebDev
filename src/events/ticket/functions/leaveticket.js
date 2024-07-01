@@ -8,7 +8,7 @@ export async function leaveTicket(interaction) {
     if (interaction.user.id !== userid) {
         await interaction.reply({
             content: `${e.Saphire_recusado} | Somente o <@${userid || `Not Foud`}> pode fechar esse ticket!`,
-            ephemeral: true
+            ephemeral
         })
     }
     // const modalinteraction = {
