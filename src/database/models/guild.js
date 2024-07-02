@@ -22,6 +22,6 @@ export default model('Guild', new Schema({
     verification: {
         channelconfig: { type: String },
         channellog: { type: String },
-        roleverifcationId: { type: String }
+        roleverificationId: { type: String }
     }
 }))
