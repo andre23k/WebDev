@@ -7,7 +7,6 @@ const { e } = require("../../JSON/emojis.json");
 
 export default async function inviteMember(member, inviter, invite) {
     try {
-        await registerMemberAdd(member);
 
         const data = await Database.Guild.findOne({ Id: member.guild.id });
         const channel = client.channels.cache.get(data.register.invitechannelId);
@@ -29,6 +28,7 @@ export default async function inviteMember(member, inviter, invite) {
         }
 
         await channel.send(message);
+        await registerMemberAdd(member);
     } catch (error) {
         console.error('Erro ao processar inviteMember:', error);
     }
@@ -36,29 +36,35 @@ export default async function inviteMember(member, inviter, invite) {
 
 async function getInviteCount(guildId, inviterId) {
     try {
-        const inviteCountsData = await Database.Guild.findOne({ Id: guildId, "invites.userid": inviterId });
-        return inviteCountsData ? inviteCountsData.invites[0].count : 0;
+        const guild = await Database.Guild.findOne({ Id: guildId, "invites.userid": inviterId });
+        if (guild) {
+            const inviterData = guild.invites.find(invite => invite.userid === inviterId);
+            return inviterData ? inviterData.count : 0;
+        }
+        return 0;
     } catch (error) {
         console.error('Erro ao carregar contagens de convites:', error);
         return 0;
     }
 }
 
-
 async function saveInviteCount(guildId, inviterId) {
     try {
-        const guild = await Database.Guild.findOne({ Id: guildId }); 
-        if (!guild) return;
+        const guild = await Database.Guild.findOne({ Id: guildId });
+        if (!guild) {
+            console.error(`Guild not found: ${guildId}`);
+            return;
+        }
 
         const existingInvite = guild.invites.find(invite => invite.userid === inviterId);
 
         if (existingInvite) {
-            await Database.Guild.findOneAndUpdate(
+            await Database.Guild.updateOne(
                 { Id: guildId, "invites.userid": inviterId },
                 { $inc: { "invites.$.count": 1 } }
             );
         } else {
-            await Database.Guild.findOneAndUpdate(
+            await Database.Guild.updateOne(
                 { Id: guildId },
                 { $push: { invites: { userid: inviterId, count: 1 } } }
             );
@@ -67,8 +73,6 @@ async function saveInviteCount(guildId, inviterId) {
         console.error('Erro ao salvar contagem de convites:', error);
     }
 }
-
-
 async function registerMemberAdd(member) {
     try {
         const data = await Database.Guild.findOne({ Id: member.guild.id });
