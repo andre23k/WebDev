@@ -2,8 +2,8 @@ import { ApplicationCommandType, PermissionFlagsBits, ButtonStyle, ApplicationCo
 import { PermissionsTranslate, BitColors } from '../../util/constants.js';
 import { createRequire } from 'node:module';
 import Database from '../../database/Database.js';
-const require = createRequire(import.meta.url)
-const { e } = require('../../JSON/emojis.json')
+const require = createRequire(import.meta.url);
+const { e } = require('../../JSON/emojis.json');
 
 export default {
     name: "verificar",
@@ -34,25 +34,24 @@ export default {
     ],
 
     run: async (client, interaction) => {
-       try {
+        try {
             const ChannelConfigId = interaction.options.getChannel('channel-config')?.id;
             const ChannellogId = interaction.options.getChannel('channel-log')?.id;
             const Roleverification = interaction.options.getRole('role-verification')?.id;
             const guildId = interaction.guild.id;
 
-            if (!interaction.guild.me?.permissions.has(PermissionFlagsBits.ManageRoles) || !interaction.guild.me?.permissions.has(PermissionFlagsBits.Administrator)) {
+            if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles) || !interaction.guild.members.me.permissions.has(PermissionFlagsBits.Administrator))
                 return await interaction.reply({
                     content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageRoles}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
                     ephemeral: true
                 });
-            }
 
-            if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+
+            if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator))
                 return await interaction.reply({
                     content: `${e.Saphire_recusado} | Você não tem permissão para usar esse comando.`,
                     ephemeral: true
                 });
-            }
 
             await Database.Guild.findOneAndUpdate(
                 { Id: guildId },
@@ -67,7 +66,7 @@ export default {
             );
 
             await interaction.reply({
-                content: `Sistema de verificação foi enviado com sucesso.`,
+                content: `Sistema de verificação foi configurado com sucesso.`,
                 ephemeral: true
             });
 
@@ -96,7 +95,7 @@ export default {
                 });
             }
         } catch (error) {
-            console.error('Erro ao executar o comando verificar:', error);
+            console.log(error);
             await interaction.reply({
                 content: `${e.Desespero} | Ocorreu um erro ao executar esse comando!`,
                 ephemeral: true
