@@ -59,7 +59,7 @@ export default {
                     $set: {
                         'verification.channelconfig': ChannelConfigId,
                         'verification.channellog': ChannellogId,
-                        'verification.roleverifcationId': Roleverification
+                        'verification.roleverificationId': Roleverification
                     },
                 },
                 { upsert: true, new: true }

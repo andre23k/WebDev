@@ -18,33 +18,36 @@ export default async function interactionButtonVerification(interaction) {
 
     const memberId = interaction.user.id;
     const member = interaction.guild.members.cache.get(memberId);
-    const data = await Database.Guild.findOne({ Id: interaction.guild.id })
-    const role = interaction.guild.roles.cache.get(data.verification.roleverifcationId);
-    
+    const data = await Database.Guild.findOne({ Id: interaction.guild.id });
+    const role = interaction.guild.roles.cache.get(data.verification.roleverificationId);
+
     if (!role || (member && member.roles.cache.has(role.id))) {
       await interaction.reply({
-        content: `Você já foi verificado anteriormente ou já possui acesso ao servidor.`,
-        ephemeral,
+        content: `${e.Saphire_recusado} | Você já foi verificado anteriormente ou já possui acesso ao servidor.`,
+        ephemeral
       });
       return;
     }
+
     const channellog = client.channels.cache.get(data.verification.channellog);
 
     await member.roles.add(role.id, "Verificação");
-
+    
     await interaction.reply({
-      content: `Olá, ${interaction.user.username}! Você foi verificado e agora tem acesso ao servidor.`,
+      content: `${e.Saphire_ok} | Olá, ${interaction.user.username}! Você foi verificado e agora tem acesso ao servidor.`,
       ephemeral
-    }).then(async () => await channellog.send({
+    });
+
+    await channellog.send({
       embeds: [{
         title: `Checking System logs`,
         color: BitColors.DarkRed,
-        author: ({ name: client.user.username, iconURL: client.user.displayAvatarURL({ dynamic: true }) }),
+        author: { name: client.user.username, iconURL: client.user.displayAvatarURL({ dynamic: true }) },
         thumbnail: { url: interaction.user.displayAvatarURL({ forceStatic: true }) || null },
         fields: [
           {
             name: `${e.Users} | User:`,
-            value: `${interaction.user || `Not Foud`} (\`${interaction.user.id || `Not Foud`}\`)`,
+            value: `${interaction.user || `Not Found`} (\`${interaction.user.id || `Not Found`}\`)`,
           },
           {
             name: `📅 | Data:`,
@@ -52,18 +55,13 @@ export default async function interactionButtonVerification(interaction) {
           }
         ]
       }]
-    })).catch(async () => await interaction.editReply({
-      content: `${e.Saphire_triste} | Ocorreu um erro ao se verificar.`,
-      ephemeral
-    }))
-
-
+    });
 
   } catch (error) {
     console.error(error);
     await interaction.editReply({
-      content: "Desculpe, ocorreu um erro ao processar sua verificação. Por favor, tente novamente mais tarde ou entre em contato com os administradores do servidor.",
-      ephemeral,
+      content: `${e.Desespero} | Desculpe, ocorreu um erro ao processar sua verificação. Por favor, tente novamente mais tarde ou entre em contato com os administradores do servidor.`,
+      ephemeral
     });
   }
 }
