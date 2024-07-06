@@ -1,9 +1,5 @@
 import client from '../../client.js';
 import Database from '../../database/Database.js';
-import { BitColors } from '../../util/constants.js';
-import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
-const { e } = require("../../JSON/emojis.json");
 
 export default async function inviteMember(member, inviter, invite) {
     try {
@@ -28,7 +24,6 @@ export default async function inviteMember(member, inviter, invite) {
         }
 
         await channel.send(message);
-        await registerMemberAdd(member);
     } catch (error) {
         console.error('Erro ao processar inviteMember:', error);
     }
@@ -71,27 +66,5 @@ async function saveInviteCount(guildId, inviterId) {
         }
     } catch (error) {
         console.error('Erro ao salvar contagem de convites:', error);
-    }
-}
-async function registerMemberAdd(member) {
-    try {
-        const data = await Database.Guild.findOne({ Id: member.guild.id });
-        const channel = client.channels.cache.get(data.register.welcomechannelId);
-        if (!channel) return;
-
-        await channel.send({
-            embeds: [{
-                title: 'Entrou no servidor!',
-                color: BitColors.DarkRed,
-                description: `${e.Ids} **Membro:** ${member}\n⠀ ${e.Ids} **ID:** \`${member.user.id}\`\n⠀ ${e.Ids} **Tag:** \`${member.user.tag}\` `,
-                author: {
-                    name: client.user.username,
-                    iconURL: client.user.displayAvatarURL({ dynamic: true })
-                },
-                thumbnail: { url: member.user.displayAvatarURL({ forceStatic: true }) || null }
-            }]
-        });
-    } catch (error) {
-        console.error('Erro ao registrar a entrada do membro:', error);
     }
 }
