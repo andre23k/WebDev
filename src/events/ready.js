@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import client from "../client.js"
+
 client.invites = new Map();
 
 client.once('ready', async () => {
@@ -25,6 +26,7 @@ client.once('ready', async () => {
         console.error(`Erro ao buscar convites para o servidor ${guild.id}:`, err);
     }
   }
+
 
   console.log('Event Ready | OK')
 })

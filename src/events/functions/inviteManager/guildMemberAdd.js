@@ -4,6 +4,7 @@ import { BitColors } from '../../../util/constants.js';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { e } = require("../../../JSON/emojis.json");
+client.invites = new Map();
 
 client.on('guildMemberAdd', async member => {
     try {
@@ -11,9 +12,11 @@ client.on('guildMemberAdd', async member => {
         const guildInvites = await member.guild.invites.fetch();
         client.invites.set(member.guild.id, new Map(guildInvites.map(inv => [inv.code, inv.uses])));
 
-        const usedInvite = guildInvites.find(inv => cachedInvites?.get(inv.code) < inv.uses);
+        const usedInvite = guildInvites.find(inv => !cachedInvites.has(inv.code) || cachedInvites.get(inv.code) < inv.uses);
         const inviter = usedInvite ? usedInvite.inviter : null;
         const inviteCode = usedInvite ? usedInvite.code : null;
+
+        const vanityURLCode = member.guild.vanityURLCode || null;
 
         const data = await Database.Guild.findOne({ Id: member.guild.id });
         if (!data || data.register.activeEvent === false) return;
@@ -23,16 +26,17 @@ client.on('guildMemberAdd', async member => {
         if (!inviteChannel || !welcomeChannel) return;
 
         let message;
-        if (!inviter) {
-            message = `🇵🇹 | Bem-vindo ${member}, foi convidado, mas não consegui descobrir quem o convidou!`;
-        } else if (member.id === inviter.id) {
-            message = `🇵🇹 | Bem-vindo ${member}, entrou no servidor pelo próprio convite!`;
-        } else if (member.guild.vanityURLCode === inviteCode) {
+
+        if (inviteCode === vanityURLCode) {
             message = `🇵🇹 | ${member} entrou pelo convite personalizado!`;
-        } else {
+        } else if (member.id === inviter?.id) {
+            message = `🇵🇹 | Bem-vindo ${member}, entrou no servidor pelo próprio convite!`;
+        } else if (inviter) {
             await saveInviteCount(member.guild.id, inviter.id);
             const inviteCount = await getInviteCount(member.guild.id, inviter.id);
             message = `🇵🇹 | Bem-vindo ${member}, foi convidado por <@!${inviter.id}>. Que agora tem ${inviteCount} invites.`;
+        } else {
+            message = `🇵🇹 | Bem-vindo ${member}, foi convidado, mas não consegui descobrir quem o convidou!`;
         }
 
         await inviteChannel.send(message).catch(err => { console.log(err) });
