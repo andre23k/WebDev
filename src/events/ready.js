@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import client from "../client.js"
+client.invites = new Map();
 
 client.once('ready', async () => {
   import("../handlers/handler.commands.js").then(fn => fn.default(client))
@@ -14,6 +15,17 @@ client.once('ready', async () => {
       console.log('Mongoose Database | FAIL!\n--> ' + err)
     })
   activities()
+
+  for (const guild of client.guilds.cache.values()) {
+    try {
+      const invites = await guild.invites.fetch();
+      client.invites.set(guild.id, new Map(invites.map(inv => [inv.code, inv.uses])));
+
+    } catch (err) {
+        console.error(`Erro ao buscar convites para o servidor ${guild.id}:`, err);
+    }
+  }
+
   console.log('Event Ready | OK')
 })
 

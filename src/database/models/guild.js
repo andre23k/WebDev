@@ -10,7 +10,8 @@ export default model('Guild', new Schema({
     },
     invites: [{
         userid: { type: String },
-        count: { type: Number, default: 0 }
+        count: { type: Number, default: 0 },
+        code: { type: [String], default: [] }
     }],
     ticket: {
         channelconfig: { type: String },
