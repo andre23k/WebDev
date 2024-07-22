@@ -1,7 +1,6 @@
 import { AuditLogEvent } from 'discord.js';
 import client from '../../../client.js';
 import Database from '../../../database/Database.js';
-client.invites = new Map();
 
 client.on('guildAuditLogEntryCreate', async (guildAuditLogsEntry, guild) => {
     if (guildAuditLogsEntry.action !== AuditLogEvent.InviteDelete) return;
@@ -11,7 +10,7 @@ client.on('guildAuditLogEntryCreate', async (guildAuditLogsEntry, guild) => {
 
     if (!target || !target.inviterId || !target.code) return;
 
-    const invites = await guild.invites.fetch();
+    const invites = guild.invites.cache;
     client.invites.set(guild.id, new Map(invites.map(inv => [inv.code, inv.uses])));
 
     const userId = target.inviterId;

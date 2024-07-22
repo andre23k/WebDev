@@ -1,6 +1,5 @@
 import client from '../../../client.js'
 import Database from '../../../database/Database.js'
-client.invites = new Map();
 
 client.on("inviteCreate", async invite => {
     const { guild, inviter, code } = invite;
