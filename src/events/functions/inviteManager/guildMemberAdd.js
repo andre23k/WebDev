@@ -28,7 +28,7 @@ client.on('guildMemberAdd', async member => {
 
         let message;
 
-        if (inviteCode === vanityURLCode) {
+        if (vanityURLCode === "fivemportugal" && !usedInvite) {
             message = `🇵🇹 | ${member} entrou pelo convite personalizado!`;
         } else if (member.id === inviter?.id) {
             message = `🇵🇹 | Bem-vindo ${member}, entrou no servidor pelo próprio convite!`;
