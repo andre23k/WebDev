@@ -7,33 +7,33 @@ const { e } = require("../../JSON/emojis.json");
 
 export default {
     name: "ticket",
-    description: "〔🛠 Admin〕 Ativa o painel de ticket.",
+    description: "〔🛠 Admin〕 Activates the ticket panel.",
     type: ApplicationCommandOptionType.Subcommand,
     dm_permission: false,
     options: [
         {
             name: 'channel-config',
-            description: 'Para qual canal o ticket vai?',
+            description: 'Which channel does the ticket go to?',
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: true,
         },
         {
             name: "category-ticket",
-            description: "Qual categoria o ticket será criado?",
+            description: "What category will the ticket be created in?",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildCategory],
             required: true,
         },
         {
             name: "roles-moderation",
-            description: "Quais cargos deseja colocar para atender e administrar o ticket?",
+            description: "What roles do you want to assign to answer and manage the ticket?",
             type: ApplicationCommandOptionType.Role,
             required: true,
         },
         {
             name: "channel-log",
-            description: "Para qual canal os logs dos tickets serão enviados?",
+            description: "Which channel will ticket logs be sent to?",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: true,
@@ -49,14 +49,14 @@ export default {
 
         if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageChannels) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator)) {
             return await interaction.reply({
-                content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageChannels}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
+                content: `${e.Saphire_recusado} | I need permission **\`${PermissionsTranslate.ManageChannels}\`** e **\`${PermissionsTranslate.Administrator}\`** to execute this command.`,
                 ephemeral
             });
         }
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             return await interaction.reply({
-                content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
+                content: `${e.Saphire_recusado} | You do not have permission to use this command.`,
                 ephemeral
             });
         }
@@ -80,39 +80,39 @@ export default {
                 components: [{
                     type: 3,
                     custom_id: 'menu',
-                    placeholder: 'Escolha a categoria:',
+                    placeholder: 'Choose category:',
                     options: [
                         {
-                            label: 'Pedir Suporte',
+                            label: 'Request Support',
                             emoji: e.Seguro,
                             value: 'support',
                         },
                         {
-                            label: 'Enviar sugestão',
+                            label: 'Send suggestion',
                             emoji: e.Saphire_dance,
-                            value: 'sugestão',
+                            value: 'suggestion',
                         },
                         {
-                            label: 'Apelar uma punição',
+                            label: 'Appeal a punishment',
                             emoji: e.Ban,
-                            value: 'punição',
+                            value: 'punishment',
                         },
                         {
-                            label: 'Fazer denúncia',
+                            label: 'Make a complaint',
                             emoji: e.Saphire_Stonks,
-                            value: 'denúncia',
+                            value: 'complaint',
                         },
                         {
-                            label: 'Minha opção não está aqui! Me ajuda!',
+                            label: 'My option is not here! Help me!',
                             emoji: '❓',
-                            value: 'ajuda',
+                            value: 'help',
                         },
                     ]
                 }]
             };
 
             await interaction.reply({
-                content: `${e.Saphire_ok} | Ticket ativado com sucesso!`,
+                content: `${e.Saphire_ok} | Ticket activated successfully!`,
                 ephemeral
             });
 
@@ -120,11 +120,11 @@ export default {
             if (channelConfig)
                 return await channelConfig.send({
                     embeds: [{
-                        author: { name: "Criar Ticket" },
+                        author: { name: "Create Ticket" },
                         color: 0x2f3136,
-                        description: `Para criar um ticket, selecione o tópico que você precisa na seleção abaixo.`,
+                        description: `To create a ticket, select the topic you need from the selection below..`,
                         thumbnail: {
-                            url: `https://media.discordapp.net/attachments/1194433381019164682/1195792969010266302/6b7280b1f7c377f6773f5b81b9bb49bf.png?ex=65b547fc&is=65a2d2fc&hm=1a0f2e0a46f87e080bc293e448a6c401da54e64d036e3246c7a4c8199469c975&=&format=webp&quality=lossless&width=54&height=54`
+                            url: `https://media.discordapp.net/attachments/1012919673840484382/1271938526992269354/dev.jpg?ex=66b92890&is=66b7d710&hm=7728d801e3c706fa247ee96cb0e0e0592e67ee17ff71deb6298a689f1b0d0ba9&=&format=webp&width=72&height=72`
                         }
                     }],
                     components: [selectMenu]
@@ -133,7 +133,7 @@ export default {
         } catch (error) {
             console.error(error);
             await interaction.reply({
-                content: `${e.Saphire_recusado} | Ocorreu um erro ao configurar o painel de ticket. Por favor, tente novamente mais tarde.`,
+                content: `${e.Saphire_recusado} | An error occurred while configuring the ticket panel. Please try again later.`,
                 ephemeral
             });
         }

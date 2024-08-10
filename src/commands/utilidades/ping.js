@@ -5,7 +5,7 @@ const { e } = require('../../JSON/emojis.json')
 
 export default {
     name: "ping",
-    description: "〔⚙️ Utilidade〕 Veja meu ping.",
+    description: "〔⚙️ Utilidade〕 See my ping.",
     type: ApplicationCommandType.ChatInput,
     dm_permission: false,
 
@@ -14,20 +14,18 @@ export default {
             await interaction.update({ content: `${e.Load} | Pinging...`, components: [] }).catch(() => { })
         else await interaction.reply({ content: `${e.Load} | Pinging...` }).catch(() => { })
 
-
-        let toSubtract = Date.now()
         const replayPing = Date.now() - interaction.createdAt.valueOf()
         toSubtract = Date.now()
 
         const data = {
-            content: `⏱️ | ${Date.stringDate(client.uptime)}\n${e.Slash} | Interações: ${client.interactions || 0}\n${e.Anya_pulo} | Events: ${client.events || 0} \n${e.Discord} | Discord API Latency: ${emojiFormat(client.ws.ping)}\n⚡ | Interaction Response: ${emojiFormat(replayPing)}`,
+            content: `⏱️ | ${Date.stringDate(client.uptime)}\n${e.Slash} | Interactions: ${client.interactions || 0}\n${e.Anya_pulo} | Events: ${client.events || 0} \n${e.Discord} | Discord API Latency: ${emojiFormat(client.ws.ping)}\n⚡ | Interaction Response: ${emojiFormat(replayPing)}`,
             components: [
                 {
                     type: 1,
                     components: [
                         {
                             type: 2,
-                            label: `Atualizar`,
+                            label: `Update`,
                             emoji: '🔃',
                             custom_id: JSON.stringify({ key: 'ping' }),
                             style: ButtonStyle.Primary,

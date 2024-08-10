@@ -7,27 +7,27 @@ const { e } = require('../../JSON/emojis.json');
 
 export default {
     name: "verificar",
-    description: "〔🛠 Admin〕 Ative meu sistema de verificação.",
+    description: "〔🛠 Admin〕 Activate my verification system.",
     type: ApplicationCommandType.ChatInput,
     dm_permission: false,
     options: [
         {
             name: 'channel-config',
-            description: 'Para qual canal o sistema de verificar vai?',
+            description: 'Which channel does the verification system go to?',
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: true,
         },
         {
             name: "channel-log",
-            description: "Qual canal vai os logs de verificação?",
+            description: "Which channel do the verification logs go to?",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: true,
         },
         {
             name: "role-verification",
-            description: "Qual cargo vai ser setado nos membros?",
+            description: "What position will be assigned to the members?",
             type: ApplicationCommandOptionType.Role,
             required: true,
         },
@@ -42,14 +42,14 @@ export default {
 
             if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles) || !interaction.guild.members.me.permissions.has(PermissionFlagsBits.Administrator))
                 return await interaction.reply({
-                    content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageRoles}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
+                    content: `${e.Saphire_recusado} | I need permission **\`${PermissionsTranslate.ManageRoles}\`** e **\`${PermissionsTranslate.Administrator}\`** to execute this command.`,
                     ephemeral: true
                 });
 
 
             if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator))
                 return await interaction.reply({
-                    content: `${e.Saphire_recusado} | Você não tem permissão para usar esse comando.`,
+                    content: `${e.Saphire_recusado} | You do not have permission to use this command.`,
                     ephemeral: true
                 });
 
@@ -66,7 +66,7 @@ export default {
             );
 
             await interaction.reply({
-                content: `Sistema de verificação foi configurado com sucesso.`,
+                content: `${e.Saphire_ok} | Verification system has been successfully configured.`,
                 ephemeral: true
             });
 
@@ -74,8 +74,8 @@ export default {
             if (channelConfig) {
                 await channelConfig.send({
                     embeds: [{
-                        title: `Sistema de verificação FiveM Portugal`,
-                        description: `Clique no botão abaixo para receber acesso ao servidor.`,
+                        title: `Verification System`,
+                        description: `Click the button below to receive access to the server.`,
                         color: BitColors.Blue
                     }],
                     components: [
@@ -84,7 +84,7 @@ export default {
                             components: [
                                 {
                                     type: 2,
-                                    label: `Verificar`,
+                                    label: `Check`,
                                     emoji: `${e.Ok}`,
                                     custom_id: `verificar`,
                                     style: ButtonStyle.Primary,
@@ -97,7 +97,7 @@ export default {
         } catch (error) {
             console.log(error);
             await interaction.reply({
-                content: `${e.Desespero} | Ocorreu um erro ao executar esse comando!`,
+                content: `${e.Desespero} | An error occurred while executing this command!`,
                 ephemeral: true
             });
         }

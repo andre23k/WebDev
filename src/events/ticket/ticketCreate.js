@@ -19,7 +19,7 @@ export default class TicketHandler {
             components: [
                 {
                     type: 2,
-                    label: 'Abrir Ticket',
+                    label: 'Open Ticket',
                     emoji: e.Users,
                     custom_id: this.type,
                     style: ButtonStyle.Primary
@@ -29,13 +29,13 @@ export default class TicketHandler {
         const data = await Database.Guild.findOne({ guildId: interaction.guild.id });
         if (!data || !data.ticket || !data.ticket.categoryId || !data.ticket.channelconfig) {
             return await interaction.reply({
-                content: `${e.Desespero} | Eiei não encontrei nenhum dado salvo no meu banco de dados desse servidor!`,
+                content: `${e.Desespero} | Hey, I didn't find any data saved in my database on this server!`,
                 ephemeral
             })
         }
 
         await interaction.reply({
-            content: `${e.Info} | Para iniciar a abertura e iniciação de um ticket você precisa confirmar **Que realmente irá usar a função**.\n Não crie tickets sem utiliza-los ou testar as suas funções (apenas com permissão). Lembre-se temos logs.\n Se quiser prosseguir com o ticket, precione o botão abaixo.`,
+            content: `${e.Info} | To start opening and starting a ticket you need to confirm **That you will actually use the function**.\n Do not create tickets without using them or testing their functions (only with permission). Remember we have logs.\n If you want to proceed with the ticket, press the button below.`,
             ephemeral,
             components: [botao]
         });
@@ -48,7 +48,7 @@ export default class TicketHandler {
         const channel = interaction.guild.channels.cache.find(c => c.topic === interaction.user.id);
         if (channel) {
             await interaction.reply({
-                content: `${e.Error} Você já possui um ticket aberto em ${channel}.`,
+                content: `${e.Error} You already have an open ticket in${channel}.`,
                 ephemeral
             });
             return;
@@ -58,23 +58,16 @@ export default class TicketHandler {
             components: [
                 {
                     type: 2,
-                    label: 'Encerrar',
+                    label: 'Close',
                     emoji: e.Ok,
                     custom_id: `close-ticket`,
                     style: ButtonStyle.Success
                 },
-                {
-                    type: 2,
-                    label: 'Arquivar',
-                    emoji: `📂`,
-                    custom_id: `file-ticket`,
-                    style: ButtonStyle.Secondary
-                }
             ]
         }
         const data = await Database.Guild.findOne({ guildId: interaction.guild.id });
         if (!data || !data.ticket || !data.ticket.categoryId || !data.ticket.channelconfig) {
-            console.log(`Dados de configuração do ticket não encontrados para a guilda ${interaction.guild.id}`);
+            console.log(`Ticket configuration data not found for guild ${interaction.guild.id}`);
         }
         const category = client.channels.cache.get(data.ticket.categoryId);
         if (!category) return
@@ -99,23 +92,25 @@ export default class TicketHandler {
                 components: [
                     {
                         type: 2,
-                        label: 'Ir para o canal',
+                        label: 'Go to channel',
                         url: `https://discord.com/channels/${interaction.guild.id}/${channel.id}`,
                         style: 5
                     }
                 ]
             };
             await interaction.reply({
-                content: `${e.Info} Olá, seu ticket de ${type} foi aberto em ${channel.toString()}`,
+                content: `${e.Info} Hello, your ticket for ${type} was opened on ${channel.toString()}`,
                 ephemeral,
                 components: [button]
             });
             return await channel.send({
                 embeds: [{
-                    title: `Central da Criação | TICKET DE \`${type || `Not Found`}\``,
+                    title: `Creation Center | TICKET \`${type || `Not Found`}\``,
                     color: 0x2f3136,
-                    description: `\n\n> ${e.SetaPDW} Seja Bem-Vindo ao seu ticket.\n\n> ${e.SetaPDW} Espere até que algum membro responsável pelos tickets venha ver o seu caso.\n\n> ${e.SetaPDW} Agradecemos pelo seu contato, lembre-se os tickets são privados e só membros da staff conseguem ver.`,
-                    footer: { text: `"Aguarde até que seu TICKET seja respondido, evite marcações desnecessárias." ` }
+                    description: `\n\n> ${e.SetaPDW} Welcome to your ticket.\n\n> ${e.SetaPDW} Please wait until a member responsible for tickets comes to see your case.\n\n> ${e.SetaPDW} Thank you for contacting us, remember that tickets are private and only staff members can see them.`,
+                    footer: {
+                        text: `"Please wait until your TICKET is answered, avoid unnecessary markings." `
+                    }
                 }], components: [buttons], content: `${interaction.user}`
             }).then(msg => msg.pin());
         });

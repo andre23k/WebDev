@@ -7,19 +7,19 @@ const { e } = require("../../JSON/emojis.json");
 
 export default {
     name: "deleteinvites",
-    description: "〔🛠 Admin〕 Remova invites de um usuário!",
+    description: "〔🛠 Admin〕 Remove invites from a user!",
     type: ApplicationCommandOptionType.Subcommand,
     dm_permission: false,
     options: [
         {
             name: 'user',
-            description: 'Qual usuário?',
+            description: 'Which user?',
             type: ApplicationCommandOptionType.User,
             required: true,
         },
         {
             name: "invites",
-            description: "Quantos invites deseja remover desse usuário?",
+            description: "How many invites do you want to remove from this user?",
             type: ApplicationCommandOptionType.Number,
             required: true,
         }
@@ -32,7 +32,7 @@ export default {
         try {
             if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageGuild) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator)) {
                 return await interaction.reply({
-                    content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageGuild}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
+                    content: `${e.Saphire_recusado} | I need permission **\`${PermissionsTranslate.ManageGuild}\`** e **\`${PermissionsTranslate.Administrator}\`** to execute this command.`,
                     ephemeral
                 });
             }
@@ -40,7 +40,7 @@ export default {
 
             if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
                 return await interaction.reply({
-                    content: `${e.Saphire_recusado} | Você não tem permissão para usar este comando.`,
+                    content: `${e.Saphire_recusado} | You do not have permission to use this command.`,
                     ephemeral
                 });
             }
@@ -49,7 +49,7 @@ export default {
 
             if (!guild) {
                 return await interaction.reply({
-                    content: `${e.Saphire_triste} | O servidor não está registrado no banco de dados.`,
+                    content: `${e.Saphire_triste} | Server is not registered in the database.`,
                     ephemeral
                 });
             }
@@ -59,7 +59,7 @@ export default {
 
             if (!userInvite || userInvite.count === 0) {
                 return interaction.reply({
-                    content: `${e.Saphire_triste} | O usuário <@${userid}> não tem convites registrados.`,
+                    content: `${e.Saphire_triste} | The user <@${userid}> has no registered invitations.`,
                     ephemeral
                 });
             }
@@ -67,7 +67,7 @@ export default {
 
             if (invitesToRemove > userInvite.count) {
                 return interaction.reply({
-                    content: `${e.Saphire_recusado} | O usuário <@${userid}> só possui ${userInvite.count} invites.`,
+                    content: `${e.Saphire_recusado} | User <@${userid}> only has ${userInvite.count} invites.`,
                     ephemeral
                 });
             }
@@ -78,14 +78,14 @@ export default {
 
 
             await interaction.reply({
-                content: `${e.Saphire_ok} | Foram removidos ${invitesToRemove} convites do usuário <@${userid}>.`,
+                content: `${e.Saphire_ok} | Removed ${invitesToRemove} invitations from user <@${userid}>.`,
                 ephemeral
             });
 
         } catch (err) {
             console.error('Erro ao executar comando deleteinvites:', err);
             await interaction.reply({
-                content: `${e.Saphire_triste} | Ocorreu um erro ao executar esse comando!`,
+                content: `${e.Saphire_triste} | An error occurred while executing this command!.`,
                 ephemeral
             });
         }

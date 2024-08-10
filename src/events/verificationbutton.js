@@ -10,7 +10,7 @@ export default async function interactionButtonVerification(interaction) {
   try {
     if (!interaction.guild || !interaction.member) {
       await interaction.reply({
-        content: "Erro ao processar a verificação. Por favor, tente novamente mais tarde ou entre em contato com os administradores do servidor.",
+        content: "Error processing verification. Please try again later or contact the server administrators.",
         ephemeral
       });
       return;
@@ -23,7 +23,7 @@ export default async function interactionButtonVerification(interaction) {
 
     if (!role || (member && member.roles.cache.has(role.id))) {
       await interaction.reply({
-        content: `${e.Saphire_recusado} | Você já foi verificado anteriormente ou já possui acesso ao servidor.`,
+        content: `${e.Saphire_recusado} | You have already been verified or already have access to the server.`,
         ephemeral
       });
       return;
@@ -31,10 +31,10 @@ export default async function interactionButtonVerification(interaction) {
 
     const channellog = client.channels.cache.get(data.verification.channellog);
 
-    await member.roles.add(role.id, "Verificação");
-    
+    await member.roles.add(role.id, "Verification");
+
     await interaction.reply({
-      content: `${e.Saphire_ok} | Olá, ${interaction.user.username}! Você foi verificado e agora tem acesso ao servidor.`,
+      content: `${e.Saphire_ok} | Hello ${interaction.user.username}! You have been verified and now have access to the server.`,
       ephemeral
     });
 
@@ -60,7 +60,7 @@ export default async function interactionButtonVerification(interaction) {
   } catch (error) {
     console.error(error);
     await interaction.editReply({
-      content: `${e.Desespero} | Desculpe, ocorreu um erro ao processar sua verificação. Por favor, tente novamente mais tarde ou entre em contato com os administradores do servidor.`,
+      content: `${e.Desespero} | Sorry, there was an error processing your verification. Please try again later or contact the server administrators.`,
       ephemeral
     });
   }

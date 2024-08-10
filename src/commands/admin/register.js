@@ -7,19 +7,19 @@ const { e } = require("../../JSON/emojis.json")
 
 export default {
     name: "register",
-    description: "〔🛠 Admin〕 Ative o sistema de registro dos membros.",
+    description: "〔🛠 Admin〕 Activate the member registration system.",
     type: ApplicationCommandOptionType.Subcommand,
     dm_permission: false,
     options: [
         {
             name: 'welcome-system',
-            description: 'Em qual canal o bot vai mandar a mensagem de boas vindas?',
+            description: 'On which channel will the bot send the welcome message?',
             type: ApplicationCommandOptionType.Channel,
             required: true,
         },
         {
             name: "invite-system",
-            description: "Em qual canal o bot vai mandar a mensagem de invites?",
+            description: "On which channel will the bot send the invite message?",
             type: ApplicationCommandOptionType.Channel,
             required: true,
         }
@@ -32,20 +32,20 @@ export default {
         try {
             if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageGuild) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator)) {
                 return await interaction.reply({
-                    content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageGuild}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
+                    content: `${e.Saphire_recusado} | I need permission **\`${PermissionsTranslate.ManageGuild}\`** e **\`${PermissionsTranslate.Administrator}\`** to execute this command.`,
                     ephemeral
                 });
             }
 
             if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
                 return await interaction.reply({
-                    content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
+                    content: `${e.Saphire_recusado} | You do not have permission to use this command.`,
                     ephemeral
                 });
             }
 
             await interaction.reply({
-                content: `${e.Anya_pulo} | Sistema de registro ativado com sucesso no servidor!`,
+                content: `${e.Anya_pulo} | Registration system successfully activated on server!`,
                 ephemeral
             })
 
@@ -62,7 +62,7 @@ export default {
             );
         } catch (err) {
             await interaction.reply({
-                content: `${e.Desespero} | Ocorreu um erro ao executar esse comando! `, err,
+                content: `${e.Desespero} | An error occurred while executing this command!. `, err,
                 ephemeral
             })
         }

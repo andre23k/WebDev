@@ -7,13 +7,13 @@ const { e } = require("../../JSON/emojis.json");
 
 export default {
     name: "rankinvites",
-    description: "〔⚙️ Utilidade〕 Veja o rank de invites!",
+    description: "〔⚙️ Utilidade〕 See the invite ranking!",
     dm_permission: false,
 
     run: async (client, interaction, args) => {
         try {
             await interaction.reply({
-                content: `${e.Load} | Ok, só um segundo..`,
+                content: `${e.Load} | Okay, just a second..`,
             });
 
             const guildId = interaction.guild.id;
@@ -21,7 +21,7 @@ export default {
 
             if (!guildData || !guildData.invites || guildData.invites.length === 0) {
                 return interaction.editReply({
-                    content: `${e.Saphire_triste} | Nenhum convite registrado ainda.`,
+                    content: `${e.Saphire_triste} | No invitations registered yet.`,
                 });
             }
 
@@ -38,7 +38,7 @@ export default {
                 embeds: [{
                     title: `Ranking - Global Invites`,
                     color: BitColors.Blue,
-                    footer: { text: `Seu ranking: ${userRanking}` },
+                    footer: { text: `Your ranking: ${userRanking}` },
                     description: inviteRanking
                         .map((data, index) => {
                             return `${e.Coroa} ${index + 1}.  ${client.users.cache.get(data.userid)?.tag || 'User#0000'} \`${data.userid}\` \n ${data.count} invites\n`;

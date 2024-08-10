@@ -7,7 +7,7 @@ export async function leaveTicket(interaction) {
     if (!interaction.channel.topic) return;
     if (interaction.user.id !== userid) {
         await interaction.reply({
-            content: `${e.Saphire_recusado} | Somente o <@${userid || `Not Foud`}> pode fechar esse ticket!`,
+            content: `${e.Saphire_recusado} | Only <@${userid || `Not Foud`}> can close this ticket!`,
             ephemeral
         })
     }
@@ -50,9 +50,9 @@ export async function leaveTicket(interaction) {
     //     ]
     // };
     // await interaction.showModal(modalinteraction)
-    await interaction.reply({ content: `${e.Ok} | Ticket fechado com sucesso.`, ephemeral: false })
+    await interaction.reply({ content: `${e.Ok} | Ticket closed successfully.`, ephemeral: false })
     await interaction.channel.setTopic('').catch(() => null)
     await interaction.channel.permissionOverwrites.edit(interaction.user.id, { ViewChannel: false },).catch(async err => {
-        await interaction.editReply({ content: `${e.Error} | Houve um erro ao fechar seu ticket.\n${err}` })
+        await interaction.editReply({ content: `${e.Error} | There was an error closing your ticket.\n${err}` })
     })
 }

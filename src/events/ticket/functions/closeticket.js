@@ -19,13 +19,13 @@ export async function handleTicketClose(interaction) {
 
 async function closeTicket(interaction) {
     await interaction.reply({
-        content: `${e.Load} | Tem certeza que deseja encerrar esse ticket?...`,
+        content: `${e.Load} | Are you sure you want to close this ticket?...`,
         components: [{
             type: 1,
             components: [
                 {
                     type: 2,
-                    label: 'Confirmar',
+                    label: 'Confirm',
                     emoji: e.Ok,
                     custom_id: 'confirmar_close',
                     style: ButtonStyle.Danger
@@ -40,7 +40,7 @@ async function closeTicket(interaction) {
     })
         .on('collect', async i => {
             await interaction.editReply({
-                content: `${e.Load} | Encerrando o ticket...`,
+                content: `${e.Load} | Closing the ticket...`,
                 components: []
             });
             setTimeout(async () => {
@@ -66,15 +66,15 @@ async function closeTicket(interaction) {
                         },
                         fields: [
                             {
-                                name: '🎫 | Quem Fechou',
+                                name: '🎫 | Who Closed',
                                 value: `${interaction.user || `Not Found`}, \`${interaction.user.id || `Not Found`}\``,
                             },
                             {
-                                name: `🎫 | Nome do ticket:`,
+                                name: `🎫 | Ticket Name:`,
                                 value: `\`${interaction.channel.name || `Not Found`}\``,
                             },
                             {
-                                name: `📅 | Data:`,
+                                name: `📅 | Date:`,
                                 value: `<t:${moment(interaction.createdTimestamp).unix()}>(<t:${~~(new Date(interaction.createdTimestamp) / 1000)}:R>)`,
                             }
                         ],

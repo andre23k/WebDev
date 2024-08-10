@@ -41,11 +41,10 @@ function activities() {
   */
 
   const activities = [
-    { name: `⌨️ | Estou online em ${client.channels.cache.size} canais!`, type: 0 },
-    { name: `FiveM Portugal`, type: 0 },
-    { name: `💻 | Meu criador: .andre23k, Obrigado meu querido por me dar a vida ❤️`, type: 0 },
-    { name: `😊 | Fui criado para ajudar e divertir vocês!`, type: 0 },
-    { name: `🏆 ┃ Moderando o servidor!`, type: 0 },
+    { name: `⌨️ | I'm online on ${client.channels.cache.size} channels!`, type: 0 },
+    { name: `💻 | My creator: .andre23k, Thank you my dear for giving me life ❤️`, type: 0 },
+    { name: `😊 | I was created to help and entertain you!`, type: 0 },
+    { name: `🏆 ┃ Moderating the server!`, type: 0 },
   ]
   const status = [
     'online '

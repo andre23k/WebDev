@@ -7,13 +7,13 @@ const { e } = require("../../JSON/emojis.json");
 
 export default {
     name: "infoinvites",
-    description: "〔⚙️ Utilidade〕 Veja quantos invites um usuário tem!",
+    description: "〔⚙️ Utilidade〕 See how many invites a user has!",
     type: ApplicationCommandOptionType.Subcommand,
     dm_permission: false,
     options: [
         {
             name: 'user',
-            description: 'Qual usuário?',
+            description: 'Which user?',
             type: ApplicationCommandOptionType.User,
             required: true,
         },
@@ -27,7 +27,7 @@ export default {
             const guildData = await Database.Guild.findOne({ Id: guildId });
             
             await interaction.reply({
-                content: `${e.Load} | Ok, só um segundo..`,
+                content: `${e.Load} | Okay, just a second..`,
             });
 
             if (guildData) {
@@ -35,22 +35,22 @@ export default {
                 
                 if (userInvite) {
                     await interaction.editReply({
-                        content: `${e.Saphire_wow} | O usuário <@${userid}> tem ${userInvite.count} invites!`
+                        content: `${e.Saphire_wow} | User <@${userid}> has ${userInvite.count} invites!`
                     });
                 } else {
                     await interaction.editReply({
-                        content: `${e.Saphire_triste} | O usuário não tem nenhum invite registrado!`
+                        content: `${e.Saphire_triste} | User has no invites registered!`
                     });
                 }
             } else {
                 await interaction.editReply({
-                    content: `${e.Saphire_triste} | O servidor não está registrado no banco de dados.`
+                    content: `${e.Saphire_triste} | The server is not registered in the database.`
                 });
             }
         } catch (err) {
             console.error('Erro ao executar comando infoinvites:', err);
             await interaction.editReply({
-                content: `${e.Saphire_triste} | Ocorreu um erro ao executar esse comando!`
+                content: `${e.Saphire_triste} | An error occurred while executing this command!`
             });
         }
     }

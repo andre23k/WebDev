@@ -6,19 +6,19 @@ const { e } = require("../../JSON/emojis.json")
 
 export default {
   name: "anunciar",
-  description: "〔🛠 Admin〕 Anuncia algo.",
+  description: "〔🛠 Admin〕 Announce something.",
   type: ApplicationCommandOptionType.Subcommand,
   dm_permission: false,
   options: [
     {
       name: 'canal',
-      description: 'Qual canal o anúncio será enviado?',
+      description: 'What channel will the ad be sent to?',
       type: ApplicationCommandOptionType.Channel,
       required: true,
     },
     {
       name: "mensagem",
-      description: "O que vai ser anúnciado?",
+      description: "What will be announced?",
       type: ApplicationCommandOptionType.String,
       required: true,
     }
@@ -30,18 +30,18 @@ export default {
 
     if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageMessages) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator))
       return interaction.reply({
-        content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageMessages}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
+        content: `${e.Saphire_recusado} | I need permission **\`${PermissionsTranslate.ManageMessages}\`** e **\`${PermissionsTranslate.Administrator}\`** to execute this command.`,
         ephemeral
       })
     if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
       interaction.reply({
-        content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
+        content: `${e.Saphire_recusado} | You do not have permission to use this command.`,
         ephemeral
       })
     } else {
 
       interaction.reply({
-        content: `${e.Ok} | Anúncio enviado com sucesso!`,
+        content: `${e.Ok} | Ad sent successfully!`,
         ephemeral
       })
 

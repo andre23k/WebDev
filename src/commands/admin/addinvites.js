@@ -7,19 +7,19 @@ const { e } = require("../../JSON/emojis.json");
 
 export default {
     name: "addinvites",
-    description: "〔🛠 Admin〕 Adiciona invites a um usuário!",
+    description: "〔🛠 Admin〕 Add invite a user!",
     type: ApplicationCommandOptionType.Subcommand,
     dm_permission: false,
     options: [
         {
             name: 'user',
-            description: 'Qual usuário?',
+            description: 'Which user?',
             type: ApplicationCommandOptionType.User,
             required: true,
         },
         {
             name: "invites",
-            description: "Quantos invites deseja adicionar ao usuário?",
+            description: "How many invites do you want to add to the user?",
             type: ApplicationCommandOptionType.Number,
             required: true,
             min_value: 1
@@ -33,14 +33,14 @@ export default {
         try {
             if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageGuild) || !interaction.guild.members.me?.permissions.has(PermissionFlagsBits.Administrator)) {
                 return interaction.reply({
-                    content: `${e.Saphire_recusado} | Eu preciso da permissão **\`${PermissionsTranslate.ManageGuild}\`** e **\`${PermissionsTranslate.Administrator}\`** para executar este comando.`,
+                    content: `${e.Saphire_recusado} | I need permission **\`${PermissionsTranslate.ManageGuild}\`** e **\`${PermissionsTranslate.Administrator}\`** to execute this command.`,
                     ephemeral
                 });
             }
 
             if (!interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
                 return interaction.reply({
-                    content: `${e.Saphire_recusado} | Você não tem permissão pra usar esse comando.`,
+                    content: `${e.Saphire_recusado} | You do not have permission to use this command.`,
                     ephemeral
                 });
             }
@@ -68,14 +68,14 @@ export default {
             }
 
             await interaction.reply({
-                content: `${e.Saphire_ok} | Adicionei com sucesso ${addedInvites} invites para <@${userId}>!\n${e.Saphire_rigth} | Valor anterior: ${oldInviteCount}\n${e.Saphire_wow} | Novo valor: ${newInviteCount}`,
+                content: `${e.Saphire_ok} | I successfully added ${addedInvites} invites for <@${userId}>!\n${e.Saphire_rigth} | Previous value: ${oldInviteCount}\n${e.Saphire_wow} | New value: ${newInviteCount}`,
                 ephemeral
             });
 
         } catch (error) {
             console.error('Erro ao adicionar convites:', error);
             await interaction.reply({
-                content: `${e.Saphire_triste} | Ocorreu um erro ao executar esse comando!`,
+                content: `${e.Saphire_triste} | An error occurred while executing this command!`,
                 ephemeral
             });
         }
