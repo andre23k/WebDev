@@ -5,48 +5,18 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { e } = require("../../../JSON/emojis.json");
 
+
 client.on('guildMemberAdd', async member => {
     try {
-
         const { guild } = member;
-
-        const cachedInvites = client.invites.get(guild.id);
-        const guildInvites =  await guild.invites.fetch();
-        if (!guildInvites?.size) return;
-        client.invites.set(guild.id, new Map(guildInvites.map(inv => [inv.code, inv.uses])));
-        const usedInvite = guildInvites.find(inv => !cachedInvites.has(inv.code) || cachedInvites.get(inv.code) < inv.uses);
-
-        const inviter = usedInvite ? usedInvite.inviter : null;
-        const inviteCode = usedInvite ? usedInvite.code : null;
-        const vanityURLCode = guild.vanityURLCode || null;
         const data = await Database.Guild.findOne({ Id: guild.id });
-        if (!data || data.register?.activeEvent === false) return;
-
-        const inviteChannel = await guild.channels.fetch(data.register.invitechannelId);
         const welcomeChannel = await guild.channels.fetch(data.register.welcomechannelId);
-        if (!inviteChannel || !welcomeChannel) return;
-
-        let message;
-
-        if (vanityURLCode === "fivemportugal" && !usedInvite) {
-            message = `🇵🇹 | ${member} entrou pelo convite personalizado!`;
-        } else if (member.id === inviter?.id) {
-            message = `🇵🇹 | Bem-vindo ${member}, entrou no servidor pelo próprio convite!`;
-        } else if (inviter) {
-            await saveInviteCount(guild.id, inviter.id);
-            const inviteCount = await getInviteCount(guild.id, inviter.id);
-            message = `🇵🇹 | Bem-vindo ${member}, foi convidado por <@!${inviter.id}>. Que agora tem ${inviteCount} invites.`;
-        } else {
-            message = `🇵🇹 | Bem-vindo ${member}, foi convidado, mas não consegui descobrir quem o convidou!`;
-        }
-
-        await inviteChannel.send(message);
 
         await welcomeChannel.send({
             embeds: [{
-                title: 'Entrou no servidor!',
+                title: 'Joined the server!',
                 color: BitColors.DarkRed,
-                description: `${e.Ids} **Membro:** ${member}\n⠀ ${e.Ids} **ID:** \`${member.user.id}\`\n⠀ ${e.Ids} **Tag:** \`${member.user.tag}\` `,
+                description: `${e.Ids} **Member:** ${member}\n⠀ ${e.Ids} **ID:** \`${member.user.id}\`\n⠀ ${e.Ids} **Tag:** \`${member.user.tag}\` `,
                 author: {
                     name: client.user.username,
                     iconURL: client.user.displayAvatarURL({ dynamic: true } || null)
@@ -54,9 +24,39 @@ client.on('guildMemberAdd', async member => {
                 thumbnail: { url: member.user.displayAvatarURL({ forceStatic: true }) || null }
             }]
         });
+        
+        const cachedInvites = client.invites.get(guild.id);
+        const guildInvites = await guild.invites.fetch();
+        if (!guildInvites?.size) return;
+        client.invites.set(guild.id, new Map(guildInvites.map(inv => [inv.code, inv.uses])));
+        const usedInvite = guildInvites.find(inv => !cachedInvites.has(inv.code) || cachedInvites.get(inv.code) < inv.uses);
+
+        const inviter = usedInvite ? usedInvite.inviter : null;
+        const vanityURLCode = guild.vanityURLCode || null;
+        if (!data || data.register?.activeEvent === false) return;
+
+        const inviteChannel = await guild.channels.fetch(data.register.invitechannelId);
+        if (!inviteChannel || !welcomeChannel) return;
+
+        let message;
+
+        if (vanityURLCode === "webdev" && !usedInvite) {
+            message = `🇵🇹 | <@${member.id}> joined via personalized invite!`;
+        } else if (member.id === inviter?.id) {
+            message = `🇵🇹 | Welcome <@${member.id}>, you joined the server by your own invitation!`;
+        } else if (inviter) {
+            await saveInviteCount(guild.id, inviter.id);
+            const inviteCount = await getInviteCount(guild.id, inviter.id);
+            message = `🇵🇹 | Welcome <@${member.id}>, you have been invited by <@${inviter.id}>. Who now has ${inviteCount} invites.`;
+        } else {
+            message = `🇵🇹 | Welcome <@${member.id}>, you were invited but I couldn't find out who invited you!`;
+        }
+
+        await inviteChannel.send(message);
+
     } catch (error) {
         console.error('Erro ao processar guildMemberAdd:', error);
-    }
+    } 
 });
 
 async function getInviteCount(guildId, inviterId) {
