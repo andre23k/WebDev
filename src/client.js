@@ -1,7 +1,7 @@
 import "./prototypes/index.js"
 import "djs-protofy/init";
 process.env.TZ = "America/Sao_Paulo"
-import { Client, Collection, GatewayIntentBits } from 'discord.js'
+import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js'
 import { discloud } from 'discloud.app'
 import LoadEvents from './handlers/handler.events.js'
 await discloud.login()
@@ -19,7 +19,8 @@ const options = {
         GatewayIntentBits.GuildScheduledEvents,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.MessageContent
-    ]
+    ],
+   
 };
 
 class Lesath extends Client {
