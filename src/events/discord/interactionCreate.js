@@ -1,7 +1,7 @@
-import client from '../client.js'
-import HandleButton from '../structures/interaction/buttoninteraction.js';
-import HandleSelectMenu from '../structures/interaction/selectMenuInteraction.js';
-import ChatInputInteractionCommand from '../structures/interaction/chatInputInteractionCommand.js';
+import client from '../../core/client.js'
+import HandleButton from '../../structures/interaction/buttoninteraction.js';
+import HandleSelectMenu from '../../structures/interaction/selectMenuInteraction.js';
+import ChatInputInteractionCommand from '../../structures/interaction/chatInputInteractionCommand.js';
 
 client.on('interactionCreate', async interaction => {
    client.interactions++

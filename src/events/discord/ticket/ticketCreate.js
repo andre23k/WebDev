@@ -1,9 +1,9 @@
 import { ButtonStyle } from 'discord.js';
 import { createRequire } from 'node:module';
-import Database from '../../database/Database.js'
-import client from '../../client.js';
+import Database from '../../../database/Database.js'
+import client from '../../../core/client.js';
 const require = createRequire(import.meta.url);
-const { e } = require("../../JSON/emojis.json");
+const { e } = require("../../../JSON/emojis.json");
 
 export default class TicketHandler {
     constructor() {

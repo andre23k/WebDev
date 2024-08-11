@@ -1,10 +1,10 @@
 import mongoose from "mongoose"
-import client from "../client.js"
+import client from "../../core/client.js"
 
 client.invites = new Map();
 
 client.once('ready', async () => {
-  import("../handlers/handler.commands.js").then(fn => fn.default(client))
+  import("../../handler/handler.commands.js").then(fn => fn.default(client))
 
   mongoose.set('strictQuery', true);
 

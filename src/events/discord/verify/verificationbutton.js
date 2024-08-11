@@ -1,10 +1,10 @@
-import { BitColors } from '../util/constants.js';
+import { BitColors } from '../../../util/constants.js';
 import moment from 'moment';
-import client from '../client.js';
+import client from '../../../core/client.js';
 import { createRequire } from 'node:module';
-import Database from '../database/Database.js';
+import Database from '../../../database/Database.js';
 const require = createRequire(import.meta.url);
-const { e } = require("../JSON/emojis.json");
+const { e } = require("../../../JSON/emojis.json");
 
 export default async function interactionButtonVerification(interaction) {
   try {

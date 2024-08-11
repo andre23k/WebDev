@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { Routes } from "discord.js";
-import client from '../client.js';
+import client from '../core/client.js';
 
 export default async () => {
     const SlashsArray = [];
@@ -21,5 +21,5 @@ export default async () => {
         Routes.applicationCommands(client.user.id),
         { body: SlashsArray },
     );
-    console.log(`${client.slashCommands.size} SlashCommands | OK!`);
+    console.log(client.slashCommands.size,` SlashCommands | OK!`);
 }

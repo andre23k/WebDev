@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module'
 const require = createRequire(import.meta.url)
-const { e } = require("../../../JSON/emojis.json")
+const { e } = require("../../../../JSON/emojis.json")
 
 export async function leaveTicket(interaction) {
     const userid = interaction.channel.topic

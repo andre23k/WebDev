@@ -14,6 +14,7 @@ export default {
             await interaction.update({ content: `${e.Load} | Pinging...`, components: [] }).catch(() => { })
         else await interaction.reply({ content: `${e.Load} | Pinging...` }).catch(() => { })
 
+        let toSubtract = Date.now()
         const replayPing = Date.now() - interaction.createdAt.valueOf()
         toSubtract = Date.now()
 

@@ -1,4 +1,4 @@
-import TicketHandler from "../../events/ticket/ticketCreate.js";
+import TicketHandler from "../../events/discord/ticket/ticketCreate.js";
 const Ticket = new TicketHandler()
 
 export default async function HandleSelectMenu(interaction) {

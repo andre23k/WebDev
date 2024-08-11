@@ -2,12 +2,12 @@ import moment from 'moment';
 import { ButtonStyle, PermissionFlagsBits } from 'discord.js';
 import discordTranscripts from 'discord-html-transcripts';
 import { createRequire } from 'node:module'
-import { BitColors } from '../../../util/constants.js';
+import { BitColors } from '../../../../util/constants.js';
 import { leaveTicket } from './leaveticket.js';
-import Database from '../../../database/Database.js';
-import client from '../../../client.js'
+import Database from '../../../../database/Database.js';
+import client from '../../../../core/client.js'
 const require = createRequire(import.meta.url)
-const { e } = require("../../../JSON/emojis.json")
+const { e } = require("../../../../JSON/emojis.json")
 
 export async function handleTicketClose(interaction) {
     if (interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {

@@ -1,30 +1,14 @@
-import client from '../../../client.js';
+import client from '../../../core/client.js';
 import Database from '../../../database/Database.js';
 import { BitColors } from '../../../util/constants.js';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { e } = require("../../../JSON/emojis.json");
 
-
-client.on('guildMemberAdd', async member => {
+client.on("guildMemberAdd", async member => {
     try {
         const { guild } = member;
-        const data = await Database.Guild.findOne({ Id: guild.id });
-        const welcomeChannel = await guild.channels.fetch(data.register.welcomechannelId);
 
-        await welcomeChannel.send({
-            embeds: [{
-                title: 'Joined the server!',
-                color: BitColors.DarkRed,
-                description: `${e.Ids} **Member:** ${member}\n⠀ ${e.Ids} **ID:** \`${member.user.id}\`\n⠀ ${e.Ids} **Tag:** \`${member.user.tag}\` `,
-                author: {
-                    name: client.user.username,
-                    iconURL: client.user.displayAvatarURL({ dynamic: true } || null)
-                },
-                thumbnail: { url: member.user.displayAvatarURL({ forceStatic: true }) || null }
-            }]
-        });
-        
         const cachedInvites = client.invites.get(guild.id);
         const guildInvites = await guild.invites.fetch();
         if (!guildInvites?.size) return;
@@ -33,9 +17,10 @@ client.on('guildMemberAdd', async member => {
 
         const inviter = usedInvite ? usedInvite.inviter : null;
         const vanityURLCode = guild.vanityURLCode || null;
-        if (!data || data.register?.activeEvent === false) return;
-
+        const data = await Database.Guild.findOne({ Id: guild.id });
+        const welcomeChannel = await guild.channels.fetch(data.register.welcomechannelId);
         const inviteChannel = await guild.channels.fetch(data.register.invitechannelId);
+        if (!data || data.register?.activeEvent === false) return;
         if (!inviteChannel || !welcomeChannel) return;
 
         let message;
@@ -54,8 +39,21 @@ client.on('guildMemberAdd', async member => {
 
         await inviteChannel.send(message);
 
+        await welcomeChannel.send({
+            embeds: [{
+                title: 'Joined the server!',
+                color: BitColors.DarkRed,
+                description: `${e.Ids} **Member:** ${member}\n⠀ ${e.Ids} **ID:** \`${member.user.id}\`\n⠀ ${e.Ids} **Tag:** \`${member.user.tag}\` `,
+                author: {
+                    name: client.user.username,
+                    iconURL: client.user.displayAvatarURL({ dynamic: true } || null)
+                },
+                thumbnail: { url: member.user.displayAvatarURL({ forceStatic: true }) || null }
+            }]
+        });
+        
     } catch (error) {
-        console.error('Erro ao processar guildMemberAdd:', error);
+        console.error('guildMemberAdd:', error);
     } 
 });
 
@@ -68,7 +66,7 @@ async function getInviteCount(guildId, inviterId) {
         }
         return 0;
     } catch (error) {
-        console.error('Erro ao carregar contagens de convites:', error);
+        console.error(error);
         return 0;
     }
 }
@@ -95,6 +93,6 @@ async function saveInviteCount(guildId, inviterId) {
             );
         }
     } catch (error) {
-        console.error('Erro ao salvar contagem de convites:', error);
+        console.error(error);
     }
 }

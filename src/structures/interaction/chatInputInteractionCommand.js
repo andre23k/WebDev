@@ -1,5 +1,6 @@
-import client from '../../client.js'
+import client from "../../core/client.js";
 import { InteractionType } from "discord.js";
+
 export default async function ChatInputInteractionCommand(interaction){
     if (interaction.type === InteractionType.ApplicationCommand) {
 

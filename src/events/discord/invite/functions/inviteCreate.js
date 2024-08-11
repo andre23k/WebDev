@@ -1,5 +1,5 @@
-import client from '../../../client.js'
-import Database from '../../../database/Database.js'
+import client from '../../../../core/client.js'
+import Database from '../../../../database/Database.js'
 
 client.on("inviteCreate", async invite => {
     const { guild, inviter, code } = invite;

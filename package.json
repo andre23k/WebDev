@@ -3,20 +3,28 @@
     "discloud.app": "^0.12.1",
     "discord-html-transcripts": "^3.2.0",
     "discord.js": "^14.15.3",
-    "djs-protofy": "^0.15.0",
+    "djs-protofy": "^0.16.0",
     "dotenv": "^16.4.5",
     "moment": "^2.30.1",
     "mongoose": "^8.5.1",
     "parse-ms": "^4.0.0"
   },
-  "name": "fivem-portugal",
-  "version": "0.4.0",
+  "name": "webdev",
+  "version": "1.0.0",
+  "description": "",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
     "start": "node ."
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andre23k/FiveM-Portugal.git"
+  },
+  "author": "andre23k",
   "license": "ISC",
-  "description": ""
+  "bugs": {
+    "url": "https://github.com/andre23k/FiveM-Portugal/issues"
+  },
+  "homepage": "https://github.com/andre23k/FiveM-Portugal#readme"
 }

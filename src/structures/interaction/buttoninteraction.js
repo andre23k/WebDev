@@ -1,7 +1,7 @@
-import client from "../../client.js";
-import { handleTicketClose } from "../../events/ticket/functions/closeticket.js";
-import TicketHandler from "../../events/ticket/ticketCreate.js";
-import interactionButtonVerification from "../../events/verificationbutton.js";
+import client from "../../core/client.js";
+import { handleTicketClose } from "../../events/discord/ticket/functions/closeticket.js";
+import TicketHandler from "../../events/discord/ticket/ticketCreate.js";
+import interactionButtonVerification from "../../events/discord/verify/verificationbutton.js";
 
 const ticket = new TicketHandler()
 

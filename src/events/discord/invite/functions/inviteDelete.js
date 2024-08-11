@@ -1,6 +1,6 @@
 import { AuditLogEvent } from 'discord.js';
-import client from '../../../client.js';
-import Database from '../../../database/Database.js';
+import client from '../../../../core/client.js'
+import Database from '../../../../database/Database.js'
 
 client.on('guildAuditLogEntryCreate', async (guildAuditLogsEntry, guild) => {
     if (guildAuditLogsEntry.action !== AuditLogEvent.InviteDelete) return;
