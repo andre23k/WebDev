@@ -26,15 +26,15 @@ client.on("guildMemberAdd", async member => {
         let message;
 
         if (vanityURLCode === "webdev" && !usedInvite) {
-            message = `🇵🇹 | <@${member.id}> joined via personalized invite!`;
+            message = `${e.vscode} | <@${member.id}> joined via personalized invite!`;
         } else if (member.id === inviter?.id) {
-            message = `🇵🇹 | Welcome <@${member.id}>, you joined the server by your own invitation!`;
+            message = `${e.vscode} | Welcome <@${member.id}>, you joined the server by your own invitation!`;
         } else if (inviter) {
             await saveInviteCount(guild.id, inviter.id);
             const inviteCount = await getInviteCount(guild.id, inviter.id);
-            message = `🇵🇹 | Welcome <@${member.id}>, you have been invited by <@${inviter.id}>. Who now has ${inviteCount} invites.`;
+            message = `${e.vscode} | Welcome <@${member.id}>, you have been invited by <@${inviter.id}>. Who now has ${inviteCount} invites.`;
         } else {
-            message = `🇵🇹 | Welcome <@${member.id}>, you were invited but I couldn't find out who invited you!`;
+            message = `${e.vscode} | Welcome <@${member.id}>, you were invited but I couldn't find out who invited you!`;
         }
 
         await inviteChannel.send(message);
