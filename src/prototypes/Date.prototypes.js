@@ -15,14 +15,14 @@ Date.prototype.constructor.format = function (DateInMs = 0, Shorted = false, wit
     if (!ms || isNaN(ms) || ms <= 0) return '0 segundo'
 
     const translate = {
-        millennia: n => n == 1 ? 'milênio' : 'milênios',
-        century: n => n == 1 ? 'século' : 'séculos',
-        years: n => n == 1 ? 'ano' : 'anos',
-        months: n => n == 1 ? 'mês' : 'mêses',
-        days: n => n == 1 ? 'dia' : 'dias',
-        hours: n => n == 1 ? 'hora' : 'horas',
-        minutes: n => n == 1 ? 'minuto' : 'minutos',
-        seconds: n => n == 1 ? 'segundo' : 'segundos'
+        millennia: n => n == 1 ? 'millennium' : 'millennia',
+        century: n => n == 1 ? 'century' : 'centuries',
+        years: n => n == 1 ? 'year' : 'years',
+        months: n => n == 1 ? 'month' : 'months',
+        days: n => n == 1 ? 'day' : 'days',
+        hours: n => n == 1 ? 'hours' : 'hour',
+        minutes: n => n == 1 ? 'minute' : 'minutes',
+        seconds: n => n == 1 ? 'second' : 'seconds'
     }
 
     const date = { millennia: 0, century: 0, years: 0, months: 0, ...parsems(ms) }
