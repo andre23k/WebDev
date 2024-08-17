@@ -1,4 +1,7 @@
-
+const Config = {
+    mainServer: "1109464496164048996",
+    canaryServer: "993634908377464912"
+}
 
 const ChannelsTypes = {
     0: "Canal de Texto",
@@ -673,7 +676,7 @@ const ErrorResponse = {
     50081: "Um sticker inválido foi enviado."
 }
 
-const permsmember= {
+const permsmember = {
     CreateInstantInvite: '\`Criar convite instantâneo\`',
     KickMembers: '\`Expulsar membros\`',
     BanMembers: '\`Banir membros\`',
@@ -716,12 +719,13 @@ const permsmember= {
     UseEmbeddedActivities: `\`Iniciar atividades\``,
     ModerateMembers: `\`Gerenciar moderação do servidor\``
 
-  }
+}
 
 
 
 
 export {
+    Config,
     ChannelsTypes,
     DiscordColors,
     BitColors,
@@ -736,4 +740,4 @@ export {
     ErrorsToIgnore,
     ErrorResponse,
     permsmember,
-    }
+}

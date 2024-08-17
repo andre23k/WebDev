@@ -9,7 +9,7 @@
     "javascript.updateImportsOnFileMove.enabled": "always",
     "extensions.ignoreRecommendations": true,
     "editor.renderLineHighlight": "gutter",
-    "editor.fontLigatures": true,
+    "editor.fontLigatures": false,
     "editor.cursorSmoothCaretAnimation": "on",
     "workbench.editor.labelFormat": "short",
     "explorer.compactFolders": false,
@@ -61,7 +61,6 @@
       "material-icon-theme.folders.theme": "specific",
       "material-icon-theme.folders.color": "#6272a4",
 
-    "editor.scrollbar.vertical": "hidden",
     "apc.header": {
         "height": 36
     },
