@@ -24,5 +24,9 @@ export default model('Guild', new Schema({
         channelconfig: { type: String },
         channellog: { type: String },
         roleverificationId: { type: String }
+    },
+    autorole:{
+        roleId: { type: String },
+        activeEvent: { type: Boolean },
     }
 }))

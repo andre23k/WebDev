@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import client from "../../core/client.js"
+import autorole from "./autorole/autorole_restart.js";
 
 client.invites = new Map();
 
@@ -7,7 +8,6 @@ client.once('ready', async () => {
   import("../../handler/handler.commands.js").then(fn => fn.default(client))
 
   mongoose.set('strictQuery', true);
-
   await mongoose.connect(process.env.DATABASE_TOKEN)
     .then(async () => {
       console.log(`Connected Database | OK!`)
@@ -15,7 +15,9 @@ client.once('ready', async () => {
     .catch(async err => {
       console.log('Mongoose Database | FAIL!\n--> ' + err)
     })
+
   activities()
+  autorole()
 
   for (const guild of client.guilds.cache.values()) {
     try {
@@ -23,11 +25,9 @@ client.once('ready', async () => {
       client.invites.set(guild.id, new Map(invites.map(inv => [inv.code, inv.uses])));
 
     } catch (err) {
-        console.error(`Erro ao buscar convites para o servidor ${guild.id}:`, err);
+      console.error(`Erro ao buscar convites para o servidor ${guild.id}:`, err);
     }
   }
-
-
   console.log('Event Ready | OK')
 })
 

@@ -2,10 +2,12 @@ import client from '../../../core/client.js';
 import Database from '../../../database/Database.js';
 import { BitColors } from '../../../util/constants.js';
 import { createRequire } from 'node:module';
+import roleAdd from '../autorole/addrole.js';
 const require = createRequire(import.meta.url);
 const { e } = require("../../../JSON/emojis.json");
 
 client.on("guildMemberAdd", async member => {
+    roleAdd(member)
     try {
         const { guild } = member;
 
