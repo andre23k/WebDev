@@ -3,6 +3,7 @@ import HandleButton from '../../structures/interaction/buttoninteraction.js';
 import HandleSelectMenu from '../../structures/interaction/selectMenuInteraction.js';
 import ChatInputInteractionCommand from '../../structures/interaction/chatInputInteractionCommand.js';
 import { sendInteractionErrorToDiscordWebhook } from '../../modules/errors/process/unhandledRejection.js'
+import ModalInteractionCommand from '../../structures/interaction/modalInteractionCommand.js';
 
 client.on('interactionCreate', async interaction => {
    client.interactions++
@@ -15,6 +16,3 @@ client.on('interactionCreate', async interaction => {
       await sendInteractionErrorToDiscordWebhook(interaction, error)
    }
 });
-
-
-
