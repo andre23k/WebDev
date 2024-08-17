@@ -1,7 +1,6 @@
 import client from "../../core/client.js";
 import { handleTicketClose } from "../../events/discord/ticket/functions/closeticket.js";
 import TicketHandler from "../../events/discord/ticket/ticketCreate.js";
-import interactionButtonVerification from "../../events/discord/verify/verificationbutton.js";
 
 const ticket = new TicketHandler()
 
@@ -13,8 +12,6 @@ export default async function HandleButton(interaction) {
     }
 
     if (type === 'close-ticket') return await handleTicketClose(interaction)
-
-    if (type === 'verificar') return await interactionButtonVerification(interaction);
 
     await ticket.createTicket(interaction, type);
 }
