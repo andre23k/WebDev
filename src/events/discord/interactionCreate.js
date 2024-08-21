@@ -8,7 +8,7 @@ import ModalInteractionCommand from '../../structures/interaction/modalInteracti
 client.on('interactionCreate', async interaction => {
    client.interactions++
    try {
-      if (interaction.isChatInputCommand()) return await ChatInputInteractionCommand(interaction)
+      if (interaction.isChatInputCommand() || interaction.isContextMenuCommand()) return await ChatInputInteractionCommand(interaction)
       if (interaction.isButton()) return await HandleButton(interaction);
       if (interaction.isAnySelectMenu()) return await HandleSelectMenu(interaction)
       if (interaction.isModalSubmit()) return await ModalInteractionCommand(interaction)
