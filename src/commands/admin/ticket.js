@@ -93,6 +93,11 @@ export default {
                             value: 'suggestion',
                         },
                         {
+                            label: 'Staff application',
+                            emoji: e.Moderador,
+                            value: 'app_staff',
+                        },
+                        {
                             label: 'Appeal a punishment',
                             emoji: e.Ban,
                             value: 'punishment',
@@ -124,7 +129,7 @@ export default {
                         color: 0x2f3136,
                         description: `To create a ticket, select the topic you need from the selection below..`,
                         thumbnail: {
-                            url: `https://media.discordapp.net/attachments/1012919673840484382/1271938526992269354/dev.jpg?ex=66b92890&is=66b7d710&hm=7728d801e3c706fa247ee96cb0e0e0592e67ee17ff71deb6298a689f1b0d0ba9&=&format=webp&width=72&height=72`
+                            url: `https://media.discordapp.net/attachments/1194433381019164682/1273786819296624714/logo.gif?ex=66c7222b&is=66c5d0ab&hm=8e807b9d829fe5cd8fa63367164dae3b7731cafe80ec2e1e8f67eb7a2dc8e64d&=&width=473&height=473`
                         }
                     }],
                     components: [selectMenu]
