@@ -1,5 +1,6 @@
 import { ApplicationCommandType, Colors, ComponentType, EmbedBuilder, InteractionType, WebhookClient } from "discord.js"
 import client from "../../../core/client.js"
+import { Config } from "../../../util/constants.js"
 
 export async function unhandledRejection(reason) {
 
@@ -17,7 +18,7 @@ export async function unhandledRejection(reason) {
   if ([500, 10004, 10008, 10062, 50001, "GuildMembersTimeout"].includes(reason?.code)) return
   console.log('unhandledRejection', reason)
 
-  const user = await client.users.fetch('648389538703736833').catch(() => null)
+  const user = await client.users.fetch(Config.ownerId).catch(() => null)
   if (!user) return
   user.send({
     embeds: [{
@@ -107,7 +108,7 @@ export async function sendInteractionErrorToDiscordWebhook(interaction, error) {
   }
 
   try {
-    const user = await client.users.fetch('648389538703736833').catch(() => null)
+    const user = await client.users.fetch(Config.ownerId).catch(() => null)
     if (!user) return
     await user.send({
       embeds: [

@@ -1,6 +1,7 @@
 const Config = {
     mainServer: "1109464496164048996",
-    canaryServer: "993634908377464912"
+    canaryServer: "993634908377464912",
+    ownerId: "648389538703736833"
 }
 
 const ChannelsTypes = {
