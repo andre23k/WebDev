@@ -114,6 +114,5 @@ export default class TicketHandler {
                 }], components: [buttons], content: `${interaction.user}`
             }).then(msg => msg.pin());
         });
-
     }
 } 

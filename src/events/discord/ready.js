@@ -6,7 +6,7 @@ client.invites = new Map();
 
 client.once('ready', async () => {
   import("../../handler/handler.commands.js").then(fn => fn.default(client))
-
+  
   mongoose.set('strictQuery', true);
   await mongoose.connect(process.env.DATABASE_TOKEN)
     .then(async () => {
