@@ -5,18 +5,18 @@ const Config = {
 }
 
 const ChannelsTypes = {
-    0: "Canal de Texto",
-    1: "Mensagens Direta / Privado",
-    2: "Canal de Voz",
-    3: "Grupo Privado",
-    4: "Categoria",
-    5: "Canal de Anúncios",
-    10: "Canal de Anúncios Temporário (Thread)",
-    11: "Canal Público (Thread)",
-    12: "Canal Privado (Thread)",
-    13: "Canal de Palco",
-    14: "Canal de Diretoria (Studant Hub)",
-    15: "Canal de Fórum"
+    0: "Text Channel",
+    1: "Direct/Private Messages",
+    2: "Voice Channel",
+    3: "Private Group",
+    4: "Category",
+    5: "Announcement Channel",
+    10: "Temporary Announcement Channel (Thread)",
+    11: "Public Channel (Thread)",
+    12: "Private Channel (Thread)",
+    13: "Stage Channel",
+    14: "Student Hub Channel",
+    15: "Forum Channel"
 }
 
 const DiscordColors = {
