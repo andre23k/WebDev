@@ -18,7 +18,6 @@ export default model('Guild', new Schema({
         channellog: { type: String },
         categoryId: { type: String },
         rolemodId: { type: [String] },
-        userIds: { type: [String], default: [] }
     },
     verification: {
         channelconfig: { type: String },
